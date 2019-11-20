@@ -1,5 +1,5 @@
 //
-//  Network Result.swift
+//  NKResult.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class NetworkResult<Output, Failure: NetworkError> {
+public final class NKResult<Output, Failure: NetworkError> {
     
     var result: Result<Output, Failure>
     

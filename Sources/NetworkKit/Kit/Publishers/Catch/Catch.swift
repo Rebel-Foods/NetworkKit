@@ -12,7 +12,7 @@ public extension NKPublishers {
     
     struct Catch<Upstream: NKPublisher, NewPublisher: NKPublisher>: NKPublisher where Upstream.Output == NewPublisher.Output {
         
-        public var result: NetworkResult<Output, Failure>
+        public var result: NKResult<Output, Failure>
         
         public var queue: NKQueue {
             upstream.queue
@@ -54,12 +54,12 @@ final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: As
     /// The publisher that this publisher receives elements from.
     private let upstream: Upstream
     
-    private var result: NetworkResult<Output, Failure>
+    private var result: NKResult<Output, Failure>
 
     /// A closure that accepts the upstream failure as input and returns a publisher to replace the upstream publisher.
     private let handler: (Upstream.Failure) -> NewPublisher
     
-    init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> NewPublisher, result: NetworkResult<Output, Failure>) {
+    init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> NewPublisher, result: NKResult<Output, Failure>) {
         self.upstream = upstream
         self.handler = handler
         self.result = result

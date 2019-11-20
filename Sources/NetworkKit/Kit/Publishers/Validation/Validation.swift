@@ -16,7 +16,7 @@ public extension NKPublishers {
             upstream.queue
         }
         
-        public var result: NetworkResult<Output, Failure>
+        public var result: NKResult<Output, Failure>
         
         public typealias Output = NetworkKit.Output
         

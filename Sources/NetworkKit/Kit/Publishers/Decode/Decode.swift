@@ -12,7 +12,7 @@ public extension NKPublishers {
     
     struct Decode<Upstream: NKPublisher, Item: Decodable, Decoder: NetworkDecoder>: NKPublisher where Upstream.Output == Decoder.Input {
         
-        public var result: NetworkResult<Output, Failure>
+        public var result: NKResult<Output, Failure>
         
         public var queue: NKQueue {
             upstream.queue

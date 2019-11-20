@@ -12,7 +12,7 @@ public extension NKPublishers {
     
     struct TryMap<Upstream: NKPublisher, MapOutput>: NKPublisher {
         
-        public var result: NetworkResult<Output, Failure>
+        public var result: NKResult<Output, Failure>
         
         public var queue: NKQueue {
             upstream.queue

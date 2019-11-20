@@ -13,7 +13,7 @@ public extension NKPublishers {
     /// A publisher that publishes the value of a key path.
     struct MapKeyPath<Upstream: NKPublisher, Output>: NKPublisher {
         
-        public var result: NetworkResult<Output, Upstream.Failure>
+        public var result: NKResult<Output, Upstream.Failure>
         
         public var queue: NKQueue {
             upstream.queue

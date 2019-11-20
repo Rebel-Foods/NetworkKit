@@ -12,7 +12,7 @@ public extension NKPublishers {
     
     struct Debounce<Upstream: NKPublisher>: NKPublisher {
         
-        public var result: NetworkResult<Output, Failure> {
+        public var result: NKResult<Output, Failure> {
             upstream.result
         }
         

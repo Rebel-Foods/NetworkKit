@@ -10,12 +10,12 @@ import Foundation
 
 class FetchOperation: AsynchronousOperation {
     
-    private let result: NetworkResult<NetworkKit.Output, NetworkKit.Failure>?
+    private let result: NKResult<NetworkKit.Output, NetworkKit.Failure>?
     private let request: URLRequest?
     
     var task: URLSessionDataTask?
     
-    init(request: URLRequest?, result: NetworkResult<NetworkKit.Output, NetworkKit.Failure>?) {
+    init(request: URLRequest?, result: NKResult<NetworkKit.Output, NetworkKit.Failure>?) {
         self.request = request
         self.result = result
         super.init()

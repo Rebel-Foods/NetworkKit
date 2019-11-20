@@ -10,7 +10,7 @@ import Foundation
 
 public struct NetworkKit: NKPublisher {
     
-    public var result: NetworkResult<Output, Failure>
+    public var result: NKResult<Output, Failure>
     
     public var queue: NKQueue
     
