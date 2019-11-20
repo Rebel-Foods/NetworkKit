@@ -9,5 +9,6 @@
 import Foundation
 
 extension JSONDecoder: NetworkDecoder {
+    
     public typealias Input = Data
 }

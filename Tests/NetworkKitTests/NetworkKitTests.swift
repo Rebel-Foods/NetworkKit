@@ -1,5 +1,4 @@
 import XCTest
-import Combine
 @testable import NetworkKit
 
 enum APIType: String, APIRepresentable {
@@ -62,7 +61,7 @@ enum MockPointError: ConnectionRepresentable {
     var method: HTTPMethod { .get }
     
     var httpHeaders: HTTPHeaderParameters { [:] }
-//
+
     var host: HostRepresentable { Host.server }
     
     var defaultQuery: URLQuery? { nil }
