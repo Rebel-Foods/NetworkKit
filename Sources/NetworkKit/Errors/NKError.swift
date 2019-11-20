@@ -1,5 +1,5 @@
 //
-//  Network Error.swift
+//  NKError.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
@@ -7,10 +7,6 @@
 //
 
 import Foundation
-
-public protocol NetworkError: LocalizedError {
-    var errorCode: Int { get }
-}
 
 public struct NKError: NetworkError {
     public let localizedDescription: String
