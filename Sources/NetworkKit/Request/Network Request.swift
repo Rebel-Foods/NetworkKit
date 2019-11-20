@@ -44,6 +44,10 @@ public final class NetworkRequest {
     }
     
     public func requestBody<T: Encodable>(_ body: T, strategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys) -> Self {
+        guard request != nil else {
+            return self
+        }
+        
         var data: Data? = nil
         
         let encoder = JSONEncoder()
@@ -90,6 +94,10 @@ public final class NetworkRequest {
     }
     
     public func requestBody(_ body: [String: Any], encoding: HTTPBodyEncodingType) -> Self {
+        guard request != nil else {
+            return self
+        }
+        
         #if DEBUG
         DebugPrint.print("""
             Request Body:
@@ -109,6 +117,10 @@ public final class NetworkRequest {
     }
     
     public func requestBody(_ body: Data?, httpHeaders: HTTPHeaderParameters) -> Self {
+        guard request != nil else {
+            return self
+        }
+        
         request?.httpBody = body
         
         var headers = request?.allHTTPHeaderFields ?? [:]
@@ -119,6 +131,10 @@ public final class NetworkRequest {
     }
     
     public func httpHeaders(_ httpHeaders: HTTPHeaderParameters) -> Self {
+        guard request != nil else {
+            return self
+        }
+        
         var headers = request?.allHTTPHeaderFields ?? [:]
         headers = headers.merging(httpHeaders) { (_, new) in new }
         request?.allHTTPHeaderFields = headers

@@ -84,6 +84,7 @@ public enum HTTPBodyEncodingType {
 }
 
 private extension HTTPBodyEncodingType {
+    
     func query(_ parameters: [String: Any]) -> String {
         var components: [(String, String)] = []
         

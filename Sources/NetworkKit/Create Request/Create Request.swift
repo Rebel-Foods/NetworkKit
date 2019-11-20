@@ -11,10 +11,11 @@ import Foundation
 public typealias URLQuery = [String: String?]
 public typealias HTTPHeaderParameters = [String: String]
 
-final class CreateRequest {
-    private(set) var request: URLRequest
+public struct CreateRequest {
     
-    init?(with connection: ConnectionRepresentable, query urlQuery: URLQuery?) {
+    public let request: URLRequest
+    
+    public init?(with connection: ConnectionRepresentable, query urlQuery: URLQuery?) {
         
         var components = URLComponents()
         components.scheme = connection.scheme.rawValue
@@ -28,12 +29,9 @@ final class CreateRequest {
         var queryItems: [URLQueryItem] = []
         queryItems.addURLQuery(query: urlQuery)
         queryItems.addURLQuery(query: connection.defaultQuery)
+        queryItems.addURLQuery(query: connection.host.defaultUrlQuery)
         
         let method = connection.method
-        
-        if method == .get {
-            queryItems.addURLQuery(query: connection.host.defaultUrlQuery)
-        }
         
         if !queryItems.isEmpty {
             components.queryItems = queryItems

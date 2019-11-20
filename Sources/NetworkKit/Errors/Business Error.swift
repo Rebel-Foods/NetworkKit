@@ -1,4 +1,4 @@
- //
+//
 //  BusinessError.swift
 //  NetworkKit
 //
