@@ -38,6 +38,7 @@ extension NetworkPublishers {
             self.keyPath1 = keyPath1
             
             result = .init()
+            perform()
         }
         
         private func perform() {

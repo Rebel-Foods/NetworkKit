@@ -20,5 +20,5 @@ public protocol HostRepresentable {
     var defaultUrlQuery: URLQuery? { get }
     
     /// Default API Type for particular host.
-    var defaultAPIVersion: APIRepresentable? { get }
+    var defaultAPIType: APIRepresentable? { get }
 }

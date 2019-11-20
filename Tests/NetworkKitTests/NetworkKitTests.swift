@@ -2,11 +2,11 @@ import XCTest
 import Combine
 @testable import NetworkKit
 
-enum APIVersion: String, APIRepresentable {
+enum APIType: String, APIRepresentable {
     case v1 = "5da1e9ae76c28f0014bbe25f"
     
     var subUrl: String {
-        return "\(rawValue)"
+        rawValue
     }
     
     var endPoint: String {
@@ -24,7 +24,7 @@ enum Host: String, HostRepresentable {
     
     var defaultHeaders: HTTPHeaderParameters { [:] }
     
-    var defaultAPIVersion: APIRepresentable? { APIVersion.v1 }
+    var defaultAPIType: APIRepresentable? { APIType.v1 }
     
     var defaultUrlQuery: URLQuery? { nil }
 }
@@ -78,52 +78,66 @@ typealias Users = [User]
 
 final class NetworkKitTests: XCTestCase {
     
+    
+//    var cancel: AnyCancellable?
+//
+//    @available(OSX 10.15, *)
+//    func testURLSession() {
+//        cancel = URLSession.shared.dataTaskPublisher(for: URL(string: "")!)
+//            .catch { (error) -> URLSession.DataTaskPublisher in
+//                print(error == URLError.network)
+//                return URLSession.shared.dataTaskPublisher(for: URL(string: "11")!)
+//            }
+//            .map(\.data)
+//            .decode(type: Users.self, decoder: JSONDecoder())
+//            .sink(receiveCompletion: { (error) in
+//
+//            }, receiveValue: { (users) in
+//                print(users)
+//            })
+//    }
+//
+//    var cancellable: NetworkCancellable?
+//
+//    func testExampleOld() {
+//        URLSession.shared.dataTask(with: URL(string: "high quality")!) { (data, response, error) in
+//            if let error = error {
+//                URLSession.shared.dataTask(with: URL(string: "low quality")!) { (data, response, error) in
+//                    if let error = error {
+//                        // fail
+//                    } else if let data = data {
+//                        // completion(UIImage(data: data)
+//                    }
+//                }
+//
+//            } else if let data = data {
+//                // completion(UIImage(data: data)
+//            }
+//        }
+//        .resume()
+//    }
+    
+    
     var users: Users = [] {
         willSet {
-//            print("Setting new Value\n\n\n\(newValue)")
-//            expecatation.fulfill()
+            print("Setting value: \(newValue)")
+            expecatation.fulfill()
         }
     }
     
-    var cancellable: NetworkCancellable?
-    
-    @available(OSX 10.15, *)
-    func testURLSession() {
-        _ = URLSession.shared.dataTaskPublisher(for: URL(string: "")!)
-    }
+    var cancellable: NetworkCancellable!
+
+    let expecatation = XCTestExpectation()
     
     func testExample() {
-        let expecatation = XCTestExpectation()
         
         cancellable = NetworkKit {
-            NetworkRequest(to: MockPointError.allUsers)
-        }
-        .validate()
-        .tryCatch { (error) in
-            NetworkKit {
-                NetworkRequest(to: MockPoint.allUsers)
-            }
+            NetworkRequest(to: MockPoint.allUsers)
         }
         .map(\.data)
         .decode(type: Users.self, decoder: JSONDecoder())
-        .completion { (_) in
-            expecatation.fulfill()
-        }
-        
-        
-        
-        
-//        .completion { (result) in
-//            switch result {
-//            case .success:
-//                XCTAssert(true)
-//
-//            case .failure:
-//                XCTAssert(false)
-//
-//            }
-//            expecatation.fulfill()
-//        }
+        .replaceError(with: [User(id: "12", createdAt: "Today", name: "Guest User", avatar: nil)])
+        .assign(to: \.users, on: self)
         
         wait(for: [expecatation], timeout: 60)
     }

@@ -40,11 +40,11 @@ open class NetworkConfiguration {
         
         configuration.requestCachePolicy = .useProtocolCachePolicy
         if #available(iOS 11.0, watchOS 4.0, tvOS 11.0, macOS 10.13, *) {
-            configuration.waitsForConnectivity = false
+            configuration.waitsForConnectivity = true
         }
         configuration.networkServiceType = .responsiveData
-        configuration.timeoutIntervalForRequest = TimeInterval(integerLiteral: 0)
-        configuration.timeoutIntervalForResource = TimeInterval(integerLiteral: 0)
+        configuration.timeoutIntervalForRequest = TimeInterval(integerLiteral: 20)
+        configuration.timeoutIntervalForResource = TimeInterval(integerLiteral: 20)
         
         return configuration
     }()

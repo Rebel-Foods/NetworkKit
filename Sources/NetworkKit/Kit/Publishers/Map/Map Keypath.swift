@@ -31,6 +31,7 @@ public extension NetworkPublishers {
             self.upstream = upstream
             self.keyPath = keyPath
             result = .init()
+            perform()
         }
         
         private func perform() {

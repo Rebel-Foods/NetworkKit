@@ -19,8 +19,8 @@ final class CreateRequest {
         var components = URLComponents()
         components.scheme = connection.scheme.rawValue
         
-        let subURL = connection.apiVersion?.subUrl ?? ""
-        let endPoint = connection.apiVersion?.endPoint ?? ""
+        let subURL = connection.apiType?.subUrl ?? ""
+        let endPoint = connection.apiType?.endPoint ?? ""
         
         components.host = (subURL.isEmpty ? subURL : subURL + ".") + connection.host.host
         components.path = endPoint + connection.path
