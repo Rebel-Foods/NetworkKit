@@ -23,7 +23,7 @@ public struct Environment: Hashable, Equatable {
         self.value = value
     }
     
-    static var current: Environment = .none
+    public internal(set) static var current: Environment = .none
     
     public static let none      = Environment(value: "")
     public static let staging   = Environment(value: "staging")
