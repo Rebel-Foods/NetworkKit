@@ -12,7 +12,7 @@ public struct NetworkKit: NKPublisher {
     
     public var result: NetworkResult<Output, Failure>
     
-    public var queue: NetworkQueue
+    public var queue: NKQueue
     
     public typealias Output = (data: Data, response: HTTPURLResponse)
     

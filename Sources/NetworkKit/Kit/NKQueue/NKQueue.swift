@@ -1,5 +1,5 @@
 //
-//  Network Queue.swift
+//  NKQueue.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class NetworkQueue {
+public final class NKQueue {
     
     let operationQueue: OperationQueue
     var request: URLRequest?

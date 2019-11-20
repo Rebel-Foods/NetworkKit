@@ -20,5 +20,5 @@ public protocol NKPublisher {
     
     var result: NetworkResult<Output, Failure> { get }
     
-    var queue: NetworkQueue { get }
+    var queue: NKQueue { get }
 }

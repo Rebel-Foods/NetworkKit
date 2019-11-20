@@ -16,7 +16,7 @@ public extension NKPublishers {
             upstream.result
         }
         
-        public var queue: NetworkQueue {
+        public var queue: NKQueue {
             upstream.queue
         }
         

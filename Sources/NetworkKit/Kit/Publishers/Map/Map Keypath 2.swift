@@ -15,7 +15,7 @@ extension NKPublishers {
         
         public var result: NetworkResult<(Output0, Output1), Upstream.Failure>
         
-        public var queue: NetworkQueue {
+        public var queue: NKQueue {
             upstream.queue
         }
 
