@@ -10,7 +10,7 @@ import Foundation
 
 public extension NetworkPublishers {
     
-    struct Validate<Upstream: NetworkPublisher>: NetworkPublisher where Upstream.Output == NetworkKit.Output, Upstream.Failure == NetworkKit.Failure {
+    struct Validate<Upstream: NKPublisher>: NKPublisher where Upstream.Output == NetworkKit.Output, Upstream.Failure == NetworkKit.Failure {
         
         public var queue: NetworkQueue {
             upstream.queue

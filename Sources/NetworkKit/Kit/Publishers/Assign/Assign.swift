@@ -10,7 +10,7 @@ import Foundation
 
 extension NetworkPublishers {
     
-    struct Assign<Root, Upstream: NetworkPublisher>: NetworkCancellable where Upstream.Failure == Never {
+    struct Assign<Root, Upstream: NKPublisher>: NetworkCancellable where Upstream.Failure == Never {
         
         /// The publisher that this publisher receives elements from.
         public let upstream: Upstream

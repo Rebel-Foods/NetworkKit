@@ -1,5 +1,5 @@
 //
-//  Publisher+Methods.swift
+//  NKPublisher+Methods.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublisher {
+public extension NKPublisher {
     
     /// Decodes the output from upstream using a specified `NetworkDecoder`.
     /// For example, use `JSONDecoder`.
@@ -109,7 +109,7 @@ public extension NetworkPublisher {
     /// Backpressure note: This publisher passes through `request` and `cancel` to the upstream. After receiving an error, the publisher sends sends any unfulfilled demand to the new `Publisher`.
     /// - Parameter handler: A closure that accepts the upstream failure as input and returns a publisher to replace the upstream publisher.
     /// - Returns: A publisher that handles errors from an upstream publisher by replacing the failed publisher with another publisher.
-    func `catch`<P: NetworkPublisher>(_ handler: @escaping (Self.Failure) -> P) -> NetworkPublishers.Catch<Self, P> where Self.Output == P.Output {
+    func `catch`<P: NKPublisher>(_ handler: @escaping (Self.Failure) -> P) -> NetworkPublishers.Catch<Self, P> where Self.Output == P.Output {
         NetworkPublishers.Catch(upstream: self, handler: handler)
     }
     
@@ -117,12 +117,12 @@ public extension NetworkPublisher {
     ///
     /// - Parameter handler: A `throw`ing closure that accepts the upstream failure as input and returns a publisher to replace the upstream publisher or if an error is thrown will send the error downstream.
     /// - Returns: A publisher that handles errors from an upstream publisher by replacing the failed publisher with another publisher.
-    func tryCatch<P: NetworkPublisher>(_ handler: @escaping (Self.Failure) throws -> P) -> NetworkPublishers.TryCatch<Self, P> where Self.Output == P.Output {
+    func tryCatch<P: NKPublisher>(_ handler: @escaping (Self.Failure) throws -> P) -> NetworkPublishers.TryCatch<Self, P> where Self.Output == P.Output {
         NetworkPublishers.TryCatch(upstream: self, handler: handler)
     }
 }
 
-public extension NetworkPublisher where Self.Output == NetworkKit.Output, Self.Failure == NetworkKit.Failure {
+public extension NKPublisher where Self.Output == NetworkKit.Output, Self.Failure == NetworkKit.Failure {
     
     /// Validates Network call response with provided acceptable status codes.
     /// - Parameter acceptableStatusCodes: Acceptable HTTP Status codes for the network call. Default value is `Array(200 < 300)`.
@@ -133,7 +133,7 @@ public extension NetworkPublisher where Self.Output == NetworkKit.Output, Self.F
     }
 }
 
-public extension NetworkPublisher {
+public extension NKPublisher {
     
     /// Attaches a subscriber with closure-based behavior.
     ///
@@ -146,7 +146,7 @@ public extension NetworkPublisher {
     }
 }
 
-public extension NetworkPublisher where Self.Failure == Never {
+public extension NKPublisher where Self.Failure == Never {
     
     /// Assigns each element from a Publisher to a property on an object.
     ///

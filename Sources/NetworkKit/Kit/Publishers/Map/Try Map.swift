@@ -10,7 +10,7 @@ import Foundation
 
 public extension NetworkPublishers {
     
-    struct TryMap<Upstream: NetworkPublisher, MapOutput>: NetworkPublisher {
+    struct TryMap<Upstream: NKPublisher, MapOutput>: NKPublisher {
         
         public var result: NetworkResult<Output, Failure>
         

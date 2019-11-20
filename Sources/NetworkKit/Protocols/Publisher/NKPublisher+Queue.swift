@@ -1,5 +1,5 @@
 //
-//  Publisher+Queue.swift
+//  NKPublisher+Queue.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NetworkPublisher {
+extension NKPublisher {
     
     func addToQueue(isSuspended: Bool = false, _ block: @escaping () -> Void) {
         let op = BlockOperation(block: block)

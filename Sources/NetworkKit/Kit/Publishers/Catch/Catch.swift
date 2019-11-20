@@ -10,7 +10,7 @@ import Foundation
 
 public extension NetworkPublishers {
     
-    struct Catch<Upstream: NetworkPublisher, NewPublisher: NetworkPublisher>: NetworkPublisher where Upstream.Output == NewPublisher.Output {
+    struct Catch<Upstream: NKPublisher, NewPublisher: NKPublisher>: NKPublisher where Upstream.Output == NewPublisher.Output {
         
         public var result: NetworkResult<Output, Failure>
         
@@ -45,7 +45,7 @@ public extension NetworkPublishers {
 }
 
 
-final class CatchOperation<Upstream: NetworkPublisher, NewPublisher: NetworkPublisher>: AsynchronousOperation where Upstream.Output == NewPublisher.Output {
+final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: AsynchronousOperation where Upstream.Output == NewPublisher.Output {
 
     public typealias Output = Upstream.Output
 

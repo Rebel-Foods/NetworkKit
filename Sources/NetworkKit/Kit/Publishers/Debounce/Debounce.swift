@@ -10,7 +10,7 @@ import Foundation
 
 public extension NetworkPublishers {
     
-    struct Debounce<Upstream: NetworkPublisher>: NetworkPublisher {
+    struct Debounce<Upstream: NKPublisher>: NKPublisher {
         
         public var result: NetworkResult<Output, Failure> {
             upstream.result

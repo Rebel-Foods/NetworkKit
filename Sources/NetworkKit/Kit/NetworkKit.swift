@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct NetworkKit: NetworkPublisher {
+public struct NetworkKit: NKPublisher {
     
     public var result: NetworkResult<Output, Failure>
     

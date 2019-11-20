@@ -11,7 +11,7 @@ import Foundation
 public extension NetworkPublishers {
     
     /// A publisher that publishes the value of a key path.
-    struct MapKeyPath<Upstream: NetworkPublisher, Output>: NetworkPublisher {
+    struct MapKeyPath<Upstream: NKPublisher, Output>: NKPublisher {
         
         public var result: NetworkResult<Output, Upstream.Failure>
         

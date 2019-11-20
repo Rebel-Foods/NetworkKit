@@ -11,7 +11,7 @@ import Foundation
 extension NetworkPublishers {
     
     /// A publisher that publishes the values of two key paths as a tuple.
-    public struct MapKeyPath2<Upstream: NetworkPublisher, Output0, Output1>: NetworkPublisher {
+    public struct MapKeyPath2<Upstream: NKPublisher, Output0, Output1>: NKPublisher {
         
         public var result: NetworkResult<(Output0, Output1), Upstream.Failure>
         

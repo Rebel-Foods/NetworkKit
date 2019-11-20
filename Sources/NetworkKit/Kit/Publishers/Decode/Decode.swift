@@ -10,7 +10,7 @@ import Foundation
 
 public extension NetworkPublishers {
     
-    struct Decode<Upstream: NetworkPublisher, Item: Decodable, Decoder: NetworkDecoder>: NetworkPublisher where Upstream.Output == Decoder.Input {
+    struct Decode<Upstream: NKPublisher, Item: Decodable, Decoder: NetworkDecoder>: NKPublisher where Upstream.Output == Decoder.Input {
         
         public var result: NetworkResult<Output, Failure>
         

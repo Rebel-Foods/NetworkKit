@@ -1,5 +1,5 @@
 //
-//  Network Publisher.swift
+//  NKPublisher.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol NetworkPublisher {
+public protocol NKPublisher {
 
     /// The kind of values published by this publisher.
     associatedtype Output

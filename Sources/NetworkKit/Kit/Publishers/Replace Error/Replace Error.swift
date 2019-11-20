@@ -10,7 +10,7 @@ import Foundation
 
 public extension NetworkPublishers {
     
-    struct ReplaceError<Upstream: NetworkPublisher>: NetworkPublisher {
+    struct ReplaceError<Upstream: NKPublisher>: NKPublisher {
         
         public var result: NetworkResult<Output, Failure>
         

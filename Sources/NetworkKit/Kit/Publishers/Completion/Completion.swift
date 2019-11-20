@@ -10,7 +10,7 @@ import Foundation
 
 extension NetworkPublishers {
     
-    struct Completion<Upstream: NetworkPublisher>: NetworkCancellable {
+    struct Completion<Upstream: NKPublisher>: NetworkCancellable {
         
         /// The publisher that this publisher receives elements from.
         public let upstream: Upstream
