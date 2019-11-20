@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublishers {
+public extension NKPublishers {
     
     /// A publisher that publishes the value of a key path.
     struct MapKeyPath<Upstream: NKPublisher, Output>: NKPublisher {

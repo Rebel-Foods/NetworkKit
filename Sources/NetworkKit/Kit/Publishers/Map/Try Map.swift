@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublishers {
+public extension NKPublishers {
     
     struct TryMap<Upstream: NKPublisher, MapOutput>: NKPublisher {
         

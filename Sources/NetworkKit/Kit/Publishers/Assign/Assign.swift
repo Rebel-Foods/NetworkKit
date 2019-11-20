@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NetworkPublishers {
+extension NKPublishers {
     
     struct Assign<Root, Upstream: NKPublisher>: NetworkCancellable where Upstream.Failure == Never {
         

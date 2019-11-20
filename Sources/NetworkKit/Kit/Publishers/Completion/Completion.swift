@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NetworkPublishers {
+extension NKPublishers {
     
     struct Completion<Upstream: NKPublisher>: NetworkCancellable {
         

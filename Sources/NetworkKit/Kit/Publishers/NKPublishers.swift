@@ -1,5 +1,5 @@
 //
-//  Network Publishers.swift
+//  NKPublishers.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -9,5 +9,5 @@
 
 import Foundation
 
-public enum NetworkPublishers {
+public enum NKPublishers {
 }

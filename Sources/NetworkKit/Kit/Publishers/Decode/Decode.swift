@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublishers {
+public extension NKPublishers {
     
     struct Decode<Upstream: NKPublisher, Item: Decodable, Decoder: NetworkDecoder>: NKPublisher where Upstream.Output == Decoder.Input {
         

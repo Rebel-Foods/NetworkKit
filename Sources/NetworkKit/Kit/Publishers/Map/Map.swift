@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublishers {
+public extension NKPublishers {
     
     struct Map<Upstream: NKPublisher, MapOutput>: NKPublisher {
         

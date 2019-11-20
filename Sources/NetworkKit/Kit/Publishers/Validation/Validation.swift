@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublishers {
+public extension NKPublishers {
     
     struct Validate<Upstream: NKPublisher>: NKPublisher where Upstream.Output == NetworkKit.Output, Upstream.Failure == NetworkKit.Failure {
         
@@ -123,7 +123,7 @@ public extension NetworkPublishers {
 }
 
 
-private extension NetworkPublishers.Validate {
+private extension NKPublishers.Validate {
     
     /// ACCEPTABLE CONTENT TYPE CHECK
     struct MIMEType {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkPublishers {
+public extension NKPublishers {
     
     struct ReplaceError<Upstream: NKPublisher>: NKPublisher {
         
@@ -28,7 +28,7 @@ public extension NetworkPublishers {
         /// The publisher from which this publisher receives elements.
         public let upstream: Upstream
         
-        public init(upstream: Upstream, output: NetworkPublishers.ReplaceError<Upstream>.Output) {
+        public init(upstream: Upstream, output: Output) {
             self.upstream = upstream
             self.output = output
             result = .init(result: .success(output))
