@@ -56,11 +56,9 @@ public extension NetworkPublisher {
     /// Use this operator when you want to wait for a pause in the delivery of events from the upstream publisher. For example, call `debounce` on the publisher from a text field to only receive elements when the user pauses or stops typing. When they start typing again, the `debounce` holds event delivery until the next pause.
     /// - Parameters:
     ///   - dueTime: The time the publisher should wait before publishing an element.
-    ///   - scheduler: The scheduler on which this publisher delivers elements
-    ///   - options: Scheduler options that customize this publisher’s delivery of elements.
     /// - Returns: A publisher that publishes events only after a specified time elapses.
-    func debounce(_ time: DispatchTimeInterval) -> NetworkPublishers.Debounce<Self> {
-        NetworkPublishers.Debounce(upstream: self, time: .now() + time)
+    func debounce(_ dueTime: DispatchTimeInterval) -> NetworkPublishers.Debounce<Self> {
+        NetworkPublishers.Debounce(upstream: self, dueTime: .now() + dueTime)
     }
     
     /// Publishes elements only after a specified time interval elapses between events.
@@ -69,10 +67,8 @@ public extension NetworkPublisher {
     /// - Parameters:
     ///   - dueTime: The time the publisher should wait before publishing an element.
     ///   - scheduler: The scheduler on which this publisher delivers elements
-    ///   - options: Scheduler options that customize this publisher’s delivery of elements.
-    /// - Returns: A publisher that publishes events only after a specified time elapses.
-    func debounce(_ time: DispatchTime) -> NetworkPublishers.Debounce<Self> {
-        NetworkPublishers.Debounce(upstream: self, time: time)
+    func debounce(_ dueTime: DispatchTime) -> NetworkPublishers.Debounce<Self> {
+        NetworkPublishers.Debounce(upstream: self, dueTime: dueTime)
     }
     
     /// Returns a publisher that publishes the value of a key path.
@@ -128,10 +124,10 @@ public extension NetworkPublisher {
 
 public extension NetworkPublisher where Self.Output == NetworkKit.Output, Self.Failure == NetworkKit.Failure {
     
-    /// <#Description#>
-    /// - Parameter acceptableStatusCodes: <#acceptableStatusCodes description#>
-    /// - Parameter checkForErrorModel: <#checkForErrorModel description#>
-    /// - Returns: <#checkForErrorModel description#>
+    /// Validates Network call response with provided acceptable status codes.
+    /// - Parameter acceptableStatusCodes: Acceptable HTTP Status codes for the network call. Default value is `Array(200 < 300)`.
+    /// - Parameter checkForErrorModel: If publisher should check for custom error model to decode.
+    /// - Returns: A publisher that validates response from an upstream publisher.
     func validate(acceptableStatusCodes: [Int] = [], checkForErrorModel: Bool = true) -> NetworkPublishers.Validate<Self> {
         NetworkPublishers.Validate(upstream: self, shouldCheckForErrorModel: checkForErrorModel, acceptableStatusCodes: acceptableStatusCodes)
     }

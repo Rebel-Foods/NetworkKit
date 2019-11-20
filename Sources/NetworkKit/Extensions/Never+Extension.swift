@@ -10,5 +10,5 @@ import Foundation
 
 extension Never: NetworkError {
     
-    public var code: Int { -150716 }
+    public var errorCode: Int { -150716 }
 }

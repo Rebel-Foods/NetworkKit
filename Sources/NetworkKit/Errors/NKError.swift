@@ -9,24 +9,24 @@
 import Foundation
 
 public protocol NetworkError: LocalizedError {
-    var code: Int { get }
+    var errorCode: Int { get }
 }
 
 public struct NKError: NetworkError {
     public let localizedDescription: String
     public let errorDescription: String?
     
-    public let code: Int
+    public let errorCode: Int
     
     init(_ httpError: HTTPStatusCode) {
-        code = httpError.rawValue
+        errorCode = httpError.rawValue
         localizedDescription = httpError.localizedDescription
         errorDescription = localizedDescription
     }
     
     public init(_ error: NSError) {
         localizedDescription = error.localizedDescription
-        code = error.code
+        errorCode = error.code
         
         if error.domain == NSCocoaErrorDomain {
             errorDescription = error.userInfo[NSDebugDescriptionErrorKey] as? String
@@ -41,16 +41,10 @@ public struct NKError: NetworkError {
         }
     }
     
-    init(_ businessError: BusinessError) {
-        code = businessError.errorCode
-        localizedDescription = businessError.localizedDescription
-        errorDescription = localizedDescription
-    }
-    
-    init(_ nkError: NKError) {
-        code = nkError.code
-        localizedDescription = nkError.localizedDescription
-        errorDescription = localizedDescription
+    init(_ error: NetworkError) {
+        errorCode = error.errorCode
+        localizedDescription = error.localizedDescription
+        errorDescription = error.errorDescription
     }
     
     static func validationCancelled(for url: URL) -> NKError {

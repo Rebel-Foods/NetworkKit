@@ -10,16 +10,16 @@ import Foundation
 
 class DebounceOperation: AsynchronousOperation {
     
-    let time: DispatchTime
+    let dueTime: DispatchTime
     
-    init(time: DispatchTime) {
-        self.time = time
+    init(dueTime: DispatchTime) {
+        self.dueTime = dueTime
         super.init()
         queuePriority = .veryHigh
     }
     
     override func main() {
-        DispatchQueue.global(qos: .utility).asyncAfter(deadline: time) { [weak self] in
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: dueTime) { [weak self] in
             self?.finish()
         }
     }

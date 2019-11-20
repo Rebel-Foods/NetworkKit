@@ -9,9 +9,9 @@
 import Foundation
 
 // MARK: - Session Manager
-final class SessionManager: NetworkConfiguration {
+final public class SessionManager: NetworkConfiguration {
     
-    static let shared = SessionManager()
+    public static let shared = SessionManager()
     
     private init() {
         super.init(configuration: NetworkConfiguration.defaultConfiguration)

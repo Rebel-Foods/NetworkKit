@@ -27,16 +27,16 @@ public extension NetworkPublishers {
         /// The publisher that this publisher receives elements from.
         public let upstream: Upstream
         
-        public let time: DispatchTime
+        public let dueTime: DispatchTime
         
-        public init(upstream: Upstream, time: DispatchTime) {
+        public init(upstream: Upstream, dueTime: DispatchTime) {
             self.upstream = upstream
-            self.time = time
+            self.dueTime = dueTime
             perform()
         }
         
         private func perform() {
-            let operation = DebounceOperation(time: time)
+            let operation = DebounceOperation(dueTime: dueTime)
             queue.operations.first?.addDependency(operation)
             addToQueue(operation)
         }
