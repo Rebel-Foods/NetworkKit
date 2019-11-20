@@ -9,7 +9,7 @@
 import Foundation
 
 /// Personal / Business / Server Errors
-enum BusinessError: LocalizedError {
+enum BusinessError: NetworkError {
     
     case errorModel(ErrorModel, Int)
     
