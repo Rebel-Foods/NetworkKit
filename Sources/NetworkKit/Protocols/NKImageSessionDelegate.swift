@@ -1,5 +1,5 @@
 //
-//  ImageDownloadDelegate.swift
+//  NKImageSessionDelegate.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
@@ -7,9 +7,9 @@
 //
 import Foundation
 
-public protocol ImageDownloadDelegate: class {
+public protocol NKImageSessionDelegate: class {
     
-    typealias ImageType = ImageSessionManager.ImageType
+    typealias ImageType = NKImageSession.ImageType
     
     var image: ImageType? { get set }
     
@@ -22,7 +22,7 @@ public protocol ImageDownloadDelegate: class {
     func prepareForReuse(_ placeholder: ImageType?)
 }
 
-public extension ImageDownloadDelegate {
+public extension NKImageSessionDelegate {
     
     
     /// Fetches Image from provided URL String and sets it on this UIImageView.
@@ -50,7 +50,7 @@ public extension ImageDownloadDelegate {
 }
 
 
-private extension ImageDownloadDelegate {
+private extension NKImageSessionDelegate {
     
     @inline(__always)
     func _fetch(fromUrlString urlString: String?,
@@ -94,7 +94,7 @@ private extension ImageDownloadDelegate {
             image = placeholder
         }
         
-        return ImageSessionManager.shared.fetch(from: url) { [weak self] (result) in
+        return NKImageSession.shared.fetch(from: url) { [weak self] (result) in
             switch result {
             case .success(let newImage):
                 if flag {

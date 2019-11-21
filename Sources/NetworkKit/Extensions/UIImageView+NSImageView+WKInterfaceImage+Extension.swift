@@ -10,7 +10,7 @@
 
 import WatchKit
 
-extension WKInterfaceImage: ImageDownloadDelegate {
+extension WKInterfaceImage: NKImageSessionDelegate {
     
     public var image: ImageType? {
         get { nil }
@@ -26,7 +26,7 @@ extension WKInterfaceImage: ImageDownloadDelegate {
 
 import UIKit.UIImage
 
-extension UIImageView: ImageDownloadDelegate {
+extension UIImageView: NKImageSessionDelegate {
     
     open func prepareForReuse(_ placeholder: ImageType? = nil) {
         image = placeholder
@@ -37,7 +37,7 @@ extension UIImageView: ImageDownloadDelegate {
 
 import AppKit.NSImage
 
-extension NSImageView: ImageDownloadDelegate {
+extension NSImageView: NKImageSessionDelegate {
     
     open func prepareForReuse(_ placeholder: ImageType? = nil) {
         image = placeholder

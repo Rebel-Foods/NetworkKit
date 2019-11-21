@@ -1,5 +1,5 @@
 //
-//  ImageDownloader.swift
+//  NKImageSession.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-public final class ImageSessionManager: NetworkConfiguration {
+public final class NKImageSession: NetworkConfiguration {
     private typealias ImageValidationResult = (response: HTTPURLResponse, data: Data, image: ImageType)
     
-    public static let shared = ImageSessionManager()
+    public static let shared = NKImageSession()
     
     public init(useCache: Bool = true, cacheDiskPath: String? = "cachedImages") {
         let requestCachePolicy: NSURLRequest.CachePolicy = useCache ? .returnCacheDataElseLoad : .useProtocolCachePolicy
@@ -20,7 +20,7 @@ public final class ImageSessionManager: NetworkConfiguration {
     }
 }
 
-public extension ImageSessionManager {
+public extension NKImageSession {
     
     /// Creates a task that retrieves the contents of a URL based on the specified URL request object, and calls a handler upon completion.
     /// - Parameter url: URL from where image has to be fetched.
@@ -98,7 +98,7 @@ public extension ImageSessionManager {
     }
 }
 
-private extension ImageSessionManager {
+private extension NKImageSession {
     
     /// Validates URL Request's HTTP Response.
     /// - Parameter response: HTTP URL Response for the provided request.

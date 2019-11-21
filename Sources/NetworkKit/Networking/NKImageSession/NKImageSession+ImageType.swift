@@ -9,21 +9,21 @@
 #if canImport(AppKit)
 import AppKit.NSImage
 
-public extension ImageSessionManager {
+public extension NKImageSession {
     typealias ImageType = NSImage
 }
 
 #elseif canImport(WatchKit)
 import UIKit.UIImage
 
-public extension ImageSessionManager {
+public extension NKImageSession {
     typealias ImageType = UIImage
 }
 
 #elseif canImport(UIKit)
 import UIKit.UIImage
 
-public extension ImageSessionManager {
+public extension NKImageSession {
     typealias ImageType = UIImage
 }
 

@@ -8,7 +8,6 @@
 
 import Foundation
 
-//MARK:- API Type
 public protocol APIRepresentable {
     
     /// Sub URL for API Type. It may include server environment for the api, it can be `current` environment.
