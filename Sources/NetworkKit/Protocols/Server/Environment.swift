@@ -11,15 +11,13 @@ import Foundation
 /// Server Environment.
 public struct Environment: Hashable, Equatable {
     
-    public typealias RawValue = String
-    
     public var value: String
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(value)
     }
     
-    public init(value: RawValue) {
+    public init(value: String) {
         self.value = value
     }
     

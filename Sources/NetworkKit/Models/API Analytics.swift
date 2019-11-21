@@ -9,6 +9,7 @@
 import Foundation
 
 public struct APIAnalytics {
+    
     public let apiName: String
     public let urlString: String
     public let totalTime: TimeInterval

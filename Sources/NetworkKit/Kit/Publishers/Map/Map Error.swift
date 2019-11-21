@@ -1,5 +1,5 @@
 //
-//  Map.swift
+//  Map Error.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -10,7 +10,7 @@ import Foundation
 
 public extension NKPublishers {
     
-    struct Map<Upstream: NKPublisher, MapOutput>: NKPublisher {
+    struct MapError<Upstream: NKPublisher, MapFailure: Error>: NKPublisher {
         
         public var result: NKResult<Output, Failure>
         
@@ -18,17 +18,17 @@ public extension NKPublishers {
             upstream.queue
         }
         
-        public typealias Output = MapOutput
+        public typealias Output = Upstream.Output
         
-        public typealias Failure = Upstream.Failure
+        public typealias Failure = MapFailure
         
         /// The publisher that this publisher receives elements from.
         public let upstream: Upstream
         
         /// The closure that transforms elements from the upstream publisher.
-        public let transform: (Upstream.Output) -> Output
+        public let transform: (Upstream.Failure) -> MapFailure
         
-        public init(upstream: Upstream, transform: @escaping (Upstream.Output) -> Output) {
+        public init(upstream: Upstream, transform: @escaping (Upstream.Failure) -> MapFailure) {
             self.upstream = upstream
             self.transform = transform
             result = .init()
@@ -46,11 +46,11 @@ public extension NKPublishers {
             
             switch upstreamResult {
             case .success(let output):
-                let newOutput = transform(output)
-                result.result = .success(newOutput)
+                result.result = .success(output)
                 
             case .failure(let error):
-                result.result = .failure(error)
+                let newError = transform(error)
+                result.result = .failure(newError)
                 
             }
         }

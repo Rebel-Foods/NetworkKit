@@ -120,6 +120,16 @@ public extension NKPublisher {
     func tryCatch<P: NKPublisher>(_ handler: @escaping (Self.Failure) throws -> P) -> NKPublishers.TryCatch<Self, P> where Self.Output == P.Output {
         NKPublishers.TryCatch(upstream: self, handler: handler)
     }
+    
+    /// Converts any failure from the upstream publisher into a new error.
+    ///
+    /// Until the upstream publisher finishes normally or fails with an error, the returned publisher republishes all the elements it receives.
+    ///
+    /// - Parameter transform: A closure that takes the upstream failure as a parameter and returns a new error for the publisher to terminate with.
+    /// - Returns: A publisher that replaces any upstream failure with a new error produced by the `transform` closure.
+    func mapError<E: Error>(_ transform: @escaping (Self.Failure) -> E) -> NKPublishers.MapError<Self, E> {
+        NKPublishers.MapError(upstream: self, transform: transform)
+    }
 }
 
 public extension NKPublisher where Self.Output == NetworkKit.Output, Self.Failure == NetworkKit.Failure {

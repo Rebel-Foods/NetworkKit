@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class NKResult<Output, Failure: NetworkError> {
+public final class NKResult<Output, Failure: Error> {
     
     var result: Result<Output, Failure>
     

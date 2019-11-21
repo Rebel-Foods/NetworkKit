@@ -16,7 +16,7 @@ public protocol NKPublisher {
     /// The kind of errors this publisher might publish.
     ///
     /// Use `Never` if this `Publisher` does not publish errors.
-    associatedtype Failure: NetworkError
+    associatedtype Failure: Error
     
     var result: NKResult<Output, Failure> { get }
     

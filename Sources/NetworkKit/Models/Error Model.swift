@@ -10,6 +10,7 @@ import Foundation
 
 // MARK: - ErrorModel
 public struct ErrorModel: Codable {
+    
     public let businessCode: Int?
     public let errorCode: Int?
     public let message: String?
