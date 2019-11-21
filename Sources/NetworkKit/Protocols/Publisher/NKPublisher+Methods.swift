@@ -135,10 +135,10 @@ public extension NKPublisher {
 public extension NKPublisher where Self.Output == NetworkKit.Output, Self.Failure == NetworkKit.Failure {
     
     /// Validates Network call response with provided acceptable status codes.
-    /// - Parameter acceptableStatusCodes: Acceptable HTTP Status codes for the network call. Default value is `Array(200 < 300)`.
+    /// - Parameter acceptableStatusCodes: Acceptable HTTP Status codes for the network call. Default value is `Array(200 ..< 300)`.
     /// - Parameter checkForErrorModel: If publisher should check for custom error model to decode.
     /// - Returns: A publisher that validates response from an upstream publisher.
-    func validate(acceptableStatusCodes: [Int] = [], checkForErrorModel: Bool = true) -> NKPublishers.Validate<Self> {
+    func validate(acceptableStatusCodes: [Int] = SessionManager.shared.acceptableStatusCodes, checkForErrorModel: Bool = true) -> NKPublishers.Validate<Self> {
         NKPublishers.Validate(upstream: self, shouldCheckForErrorModel: checkForErrorModel, acceptableStatusCodes: acceptableStatusCodes)
     }
 }

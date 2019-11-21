@@ -35,10 +35,7 @@ public extension NKPublishers {
             self.upstream = upstream
             self.shouldCheckForErrorModel = shouldCheckForErrorModel
             
-            let sessionCodes = SessionManager.shared.acceptableStatusCodes
-            let codes = acceptableStatusCodes.isEmpty ? sessionCodes : acceptableStatusCodes
-            
-            self.acceptableStatusCodes = codes
+            self.acceptableStatusCodes = acceptableStatusCodes
             
             result = .init()
             perform()
