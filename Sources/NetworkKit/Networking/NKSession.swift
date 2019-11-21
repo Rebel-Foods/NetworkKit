@@ -1,5 +1,5 @@
 //
-//  APIManager.swift
+//  NKSession.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
@@ -8,10 +8,9 @@
 
 import Foundation
 
-// MARK: - Session Manager
-final public class SessionManager: NetworkConfiguration {
+final public class NKSession: NetworkConfiguration {
     
-    public static let shared = SessionManager()
+    public static let shared = NKSession()
     
     private init() {
         super.init(configuration: NetworkConfiguration.defaultConfiguration)
