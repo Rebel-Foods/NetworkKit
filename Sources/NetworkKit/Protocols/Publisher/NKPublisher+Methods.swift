@@ -132,7 +132,7 @@ public extension NKPublisher {
     }
 }
 
-public extension NKPublisher where Self.Output == NetworkKit.Output, Self.Failure == NetworkKit.Failure {
+public extension NKPublisher where Self.Output == NetworkTask.Output, Self.Failure == NetworkTask.Failure {
     
     /// Validates Network call response with provided acceptable status codes.
     /// - Parameter acceptableStatusCodes: Acceptable HTTP Status codes for the network call. Default value is `Array(200 ..< 300)`.

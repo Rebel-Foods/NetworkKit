@@ -9,16 +9,17 @@
 import Foundation
 
 public final class NetworkRequest {
-    private(set) var request: URLRequest?
     
-    let apiName: String
+    public private(set) var request: URLRequest?
     
-    init(to endPoint: ConnectionRepresentable) {
+    public let apiName: String
+    
+    public init(to endPoint: ConnectionRepresentable) {
         request = CreateRequest(with: endPoint, query: nil)?.request
         apiName = endPoint.name ?? "nil"
     }
     
-    public func urlQuery(_ query: URLQuery) -> NetworkRequest {
+    public func urlQuery(_ query: URLQuery) -> Self {
         guard let url = request?.url?.absoluteURL,
             var components = URLComponents(string: url.absoluteString) else {
             return self

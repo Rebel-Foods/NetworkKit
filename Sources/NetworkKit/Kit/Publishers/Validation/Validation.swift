@@ -10,7 +10,7 @@ import Foundation
 
 public extension NKPublishers {
     
-    struct Validate<Upstream: NKPublisher>: NKPublisher where Upstream.Output == NetworkKit.Output, Upstream.Failure == NetworkKit.Failure {
+    struct Validate<Upstream: NKPublisher>: NKPublisher where Upstream.Output == NetworkTask.Output, Upstream.Failure == NetworkTask.Failure {
         
         public var queue: NKQueue {
             upstream.queue
@@ -18,9 +18,9 @@ public extension NKPublishers {
         
         public var result: NKResult<Output, Failure>
         
-        public typealias Output = NetworkKit.Output
+        public typealias Output = NetworkTask.Output
         
-        public typealias Failure = NetworkKit.Failure
+        public typealias Failure = NetworkTask.Failure
         
         /// The publisher from which this publisher receives elements.
         public let upstream: Upstream

@@ -10,12 +10,14 @@ import Foundation
 
 class FetchOperation: AsynchronousOperation {
     
-    private let result: NKResult<NetworkKit.Output, NetworkKit.Failure>?
+    private let result: NKResult<NetworkTask.Output, NetworkTask.Failure>?
     private let request: URLRequest?
+    private let session: URLSession
     
     var task: URLSessionDataTask?
     
-    init(request: URLRequest?, result: NKResult<NetworkKit.Output, NetworkKit.Failure>?) {
+    init(session: URLSession, request: URLRequest?, result: NKResult<NetworkTask.Output, NetworkTask.Failure>?) {
+        self.session = session
         self.request = request
         self.result = result
         super.init()
@@ -24,8 +26,6 @@ class FetchOperation: AsynchronousOperation {
     }
     
     override func main() {
-        let session = SessionManager.shared.session
-        
         guard let request = request else {
             result?.result = .failure(NKError.unsupportedURL(for: nil))
             finish()

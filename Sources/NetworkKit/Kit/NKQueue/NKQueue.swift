@@ -21,7 +21,7 @@ public final class NKQueue {
     init(operationQueue: OperationQueue, request: URLRequest?, apiName: String?) {
         self.operationQueue = operationQueue
         self.request = request
-        self.apiName = apiName ?? "nil"
+        self.apiName = apiName ?? request?.url?.absoluteString ?? "nil"
     }
     
     func addOperation(_ op: Operation) {
