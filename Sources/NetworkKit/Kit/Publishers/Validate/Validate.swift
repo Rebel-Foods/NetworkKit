@@ -1,5 +1,5 @@
 //
-//  Validation.swift
+//  Validate.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -53,7 +53,7 @@ public extension NKPublishers {
                 return
             }
             
-            guard let (data, response) = try? upstream.result.result.get() else {
+            guard let (data, response) = try? upstream.result.result?.get() else {
                 result.result = upstream.result.result
                 return
             }
@@ -102,14 +102,14 @@ public extension NKPublishers {
                     let model = try? JSONDecoder().decode(ErrorModel.self, from: data)
                     if let errorModel = model {
                         let error = BusinessError.errorModel(errorModel, response.statusCode)
-                        result.result = .failure(NKError(error))
+                        result.result = .failure(error as NSError)
                         
                         return
                     }
                     
                     // else throw http or url error
-                    if let code = HTTPStatusCode(rawValue: response.statusCode) {
-                        result.result = .failure(.init(code))
+                    if let httpError = HTTPStatusCode(rawValue: response.statusCode) {
+                        result.result = .failure(httpError as NSError)
                     } else {
                         result.result = .failure(.badServerResponse(for: url))
                     }

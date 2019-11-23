@@ -36,13 +36,9 @@ public extension NKPublishers {
         }
         
         private func perform() {
-            let operation = DebounceOperation(dueTime: dueTime)
+            let operation = DebounceOperation(result: result, url: queue.request?.url, dueTime: dueTime)
             queue.operations.first?.addDependency(operation)
             addToQueue(operation)
-        }
-        
-        public func cancel() {
-            upstream.queue.operationQueue.cancelAllOperations()
         }
     }
 }

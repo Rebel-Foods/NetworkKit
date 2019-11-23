@@ -57,6 +57,9 @@ extension NKPublishers {
                 
             case .failure(let error):
                 result.result = .failure(error)
+                
+            case .none:
+                result.result = .none
             }
         }
     }

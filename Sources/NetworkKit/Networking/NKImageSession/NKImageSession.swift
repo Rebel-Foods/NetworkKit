@@ -9,6 +9,7 @@
 import Foundation
 
 public final class NKImageSession: NetworkConfiguration {
+    
     private typealias ImageValidationResult = (response: HTTPURLResponse, data: Data, image: ImageType)
     
     public static let shared = NKImageSession()
@@ -26,9 +27,9 @@ public extension NKImageSession {
     /// - Parameter url: URL from where image has to be fetched.
     /// - Parameter useCache: Flag which allows Response and Data to be cached.
     /// - Parameter completion: The completion handler to call when the load request is complete. This handler is executed on the main queue. This completion handler takes the Result as parameter. On Success, it returns the image.  On Failure, returns URLError.
-    /// - Returns: **URLSessionTask** for further operations.
+    /// - Returns: **URLSessionDataTask** for further operations.
     @discardableResult
-    func fetch(from url: URL, cacheImage useCache: Bool = true, completion: @escaping (Result<ImageType, NKError>) -> ()) -> URLSessionDataTask {
+    func fetch(from url: URL, cacheImage useCache: Bool = true, completion: @escaping (Result<ImageType, NSError>) -> ()) -> URLSessionDataTask {
         
         let requestCachePolicy: NSURLRequest.CachePolicy = useCache ? .returnCacheDataElseLoad : .reloadIgnoringLocalCacheData
         let request = URLRequest(url: url, cachePolicy: requestCachePolicy, timeoutInterval: session.configuration.timeoutIntervalForRequest)
@@ -37,7 +38,7 @@ public extension NKImageSession {
             
             guard let `self` = self else {
                 let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)
-                completion(.failure(.init(error)))
+                completion(.failure(error))
                 return
             }
             
@@ -58,7 +59,7 @@ public extension NKImageSession {
                 #endif
                 
                 DispatchQueue.main.async {
-                    completion(.failure(.init(error)))
+                    completion(.failure(error))
                 }
                 return
             }
@@ -104,7 +105,7 @@ private extension NKImageSession {
     /// - Parameter response: HTTP URL Response for the provided request.
     /// - Parameter data: Response Data containing Image Data sent by server.
     /// - Returns: Result Containing Image on success or URL Error if validation fails.
-    private func validateImageResponse(url: URL, response: URLResponse?, data: Data?) -> Result<ImageValidationResult, NKError> {
+    private func validateImageResponse(url: URL, response: URLResponse?, data: Data?) -> Result<ImageValidationResult, NSError> {
         
         guard let httpURLResponse = response as? HTTPURLResponse, acceptableStatusCodes.contains(httpURLResponse.statusCode),
             let mimeType = httpURLResponse.mimeType, mimeType.hasPrefix("image") else {
@@ -115,17 +116,10 @@ private extension NKImageSession {
             return .failure(.zeroByteResource(for: url))
         }
         
-        guard let image = getImage(from: &data) else {
+        guard let image = ImageType.initialize(using: &data) else {
             return .failure(.cannotDecodeRawData(for: url))
         }
         
         return .success((httpURLResponse, data, image))
-    }
-    
-    /// Initializes and returns the image object with the specified data and scale factor.
-    /// - Parameter data: The data object containing the image data.
-    /// - Returns: An initialized UIImage object, or nil if the method could not initialize the image from the specified data.
-    private func getImage(from data: inout Data) -> ImageType? {
-        return ImageType.initialize(using: &data)
     }
 }

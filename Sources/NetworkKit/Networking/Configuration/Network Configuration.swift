@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: - NETWORKING
+// MARK: - NETWORK CONFIGURATION
 
 /// A Class that coordinates a group of related network data transfer tasks.
 open class NetworkConfiguration {
@@ -151,16 +151,14 @@ extension NetworkConfiguration {
 // MARK: - SERVER ENVIRONMENT
 public extension NetworkConfiguration {
     
-    /// Changes Server Environment.
-    /// - Parameter newEnvironment: New Environment type to be set.
-    @discardableResult
-    static func changeEnvironment(_ newEnvironment: Environment) -> Bool {
+    /// Updates the current environment.
+    /// - Parameter newEnvironment: New Server Environment to be set.
+    static func updateEnvironment(_ newEnvironment: Environment) {
         Environment.current = newEnvironment
         UserDefaults.standard.set(newEnvironment.value, forKey: "api_environment")
-        return true
     }
     
-    /// Returns Current Server Environment set.
+    /// Returns the current environment.
     static var currentEnvironment: Environment? {
         return Environment.current
     }

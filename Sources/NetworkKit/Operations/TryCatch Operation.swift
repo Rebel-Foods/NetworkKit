@@ -28,6 +28,8 @@ final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>:
         self.result = result
     }
     
+    private var newOperation: Operation?
+    
     override func main() {
         switch upstream.result.result {
         case .success(let output):
@@ -39,12 +41,15 @@ final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>:
                 let newPublisher = try handler(error)
                 
                 guard let newOperation = newPublisher.result.operation else {
-                    result.result = .failure(NKError.unkown() as! NewPublisher.Failure)
+                    let failError = NSError.unkown()
+                    result.result = .failure(failError as! Failure)
                     return
                 }
                 
+                self.newOperation = newOperation
+                
                 newOperation.completionBlock = { [weak self] in
-                    switch newPublisher.result.result {
+                    switch newPublisher.result.result! {
                     case .success(let output):
                         self?.result.result = .success(output)
                         
@@ -58,10 +63,21 @@ final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>:
                 
                 newOperation.main()
                 
-            } catch let handlerError {
-                result.result = .failure(NKError(handlerError as NSError) as! NewPublisher.Failure)
+            } catch {
+                let error = error as NSError
+                result.result = .failure(error as! Failure)
                 finish()
             }
+                
+        case .none:
+            result.result = .none
         }
+    }
+    
+    override func cancel() {
+        newOperation?.cancel()
+        let error = NSError.cancelled(for: upstream.queue.request?.url)
+        result.result = .failure(error as! Failure)
+        super.cancel()
     }
 }

@@ -100,6 +100,10 @@ enum HTTPStatusCode: Int, LocalizedError {
     var localizedDescription: String {
         return HTTPURLResponse.localizedString(forStatusCode: rawValue)
     }
+    
+    var errorDescription: String? {
+        return HTTPURLResponse.localizedString(forStatusCode: rawValue)
+    }
 }
 
 extension HTTPStatusCode {

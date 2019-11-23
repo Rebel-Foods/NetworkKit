@@ -22,6 +22,8 @@ final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: As
     /// A closure that accepts the upstream failure as input and returns a publisher to replace the upstream publisher.
     private let handler: (Upstream.Failure) -> NewPublisher
     
+    private var newOperation: Operation?
+    
     init(upstream: Upstream, handler: @escaping (Upstream.Failure) -> NewPublisher, result: NKResult<Output, Failure>) {
         self.upstream = upstream
         self.handler = handler
@@ -40,8 +42,10 @@ final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: As
                 return
             }
             
+            self.newOperation = newOperation
+            
             newOperation.completionBlock = { [weak self] in
-                switch newPublisher.result.result {
+                switch newPublisher.result.result! {
                 case .success(let output):
                     self?.result.result = .success(output)
                     
@@ -54,6 +58,16 @@ final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: As
             }
             
             newOperation.main()
+            
+        case .none:
+            result.result = .none
         }
+    }
+    
+    override func cancel() {
+        newOperation?.cancel()
+        let error = NSError.cancelled(for: upstream.queue.request?.url)
+        result.result = .failure(error as! Failure)
+        super.cancel()
     }
 }

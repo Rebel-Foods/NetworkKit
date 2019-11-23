@@ -26,12 +26,12 @@ extension NKPublishers {
         
         private func completion() {
             addToQueue {
-                self.block(self.upstream.result.result)
+                self.block(self.upstream.result.result!)
             }
         }
         
         private func addToQueue(_ block: @escaping () -> Void) {
-            let op = BlockOperation(block: block)
+            let op = BaseBlockOperation(request: upstream.queue.request, result: upstream.result, block: block)
             upstream.queue.addOperation(op)
         }
         

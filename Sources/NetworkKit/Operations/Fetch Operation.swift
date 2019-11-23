@@ -8,10 +8,12 @@
 
 import Foundation
 
-class FetchOperation: AsynchronousOperation {
+final class FetchOperation: AsynchronousOperation {
     
     private let result: NKResult<NetworkTask.Output, NetworkTask.Failure>?
+    
     private let request: URLRequest?
+    
     private let session: URLSession
     
     var task: URLSessionDataTask?
@@ -27,14 +29,14 @@ class FetchOperation: AsynchronousOperation {
     
     override func main() {
         guard let request = request else {
-            result?.result = .failure(NKError.unsupportedURL(for: nil))
+            result?.result = .failure(NSError.unsupportedURL(for: nil) as NSError)
             finish()
             return
         }
         
         task = session.dataTask(with: request) { [weak self] (data, response, error) in
             if let error = error as NSError? {
-                self?.result?.result = .failure(NKError(error))
+                self?.result?.result = .failure(error)
             } else if let response = response as? HTTPURLResponse, let data = data {
                 self?.result?.result = .success((data, response))
             }
@@ -43,5 +45,11 @@ class FetchOperation: AsynchronousOperation {
         }
             
         task?.resume()
+    }
+    
+    override func cancel() {
+        result?.result = .failure(NSError.cancelled(for: request?.url) as NSError)
+        task?.cancel()
+        super.cancel()
     }
 }

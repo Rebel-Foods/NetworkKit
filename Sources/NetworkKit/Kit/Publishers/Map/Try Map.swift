@@ -51,13 +51,16 @@ public extension NKPublishers {
                     let newOutput = try transform(output)
                     result.result = .success(newOutput)
                     
-                } catch let tranformError {
-                    let error = tranformError as NSError
-                    result.result = .failure(NKError(error) as! Upstream.Failure)
+                } catch {
+                    let error = error as NSError
+                    result.result = .failure(error as! Failure)
                 }
                 
             case .failure(let error):
                 result.result = .failure(error)
+                
+            case .none:
+                result.result = .none
             }
         }
     }

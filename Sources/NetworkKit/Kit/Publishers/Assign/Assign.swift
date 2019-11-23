@@ -15,26 +15,30 @@ extension NKPublishers {
         /// The publisher that this publisher receives elements from.
         public let upstream: Upstream
         
-        public let root: Root
+        /// The object on which to assign the value.
+        public let object: Root
         
+        /// The key path of the property to assign.
         public let keyPath: ReferenceWritableKeyPath<Root, Upstream.Output>
         
-        public init(upstream: Upstream, to keyPath: ReferenceWritableKeyPath<Root, Upstream.Output>, on root: Root) {
+        public init(upstream: Upstream, to keyPath: ReferenceWritableKeyPath<Root, Upstream.Output>, on object: Root) {
             self.upstream = upstream
-            self.root = root
+            self.object = object
             self.keyPath = keyPath
             assign()
         }
         
         private func assign() {
             addToQueue {
-                let value = try! self.upstream.result.result.get()
-                self.root[keyPath: self.keyPath] = value
+                guard let value = try? self.upstream.result.result?.get() else {
+                    return
+                }
+                self.object[keyPath: self.keyPath] = value
             }
         }
         
         private func addToQueue(_ block: @escaping () -> Void) {
-            let op = BlockOperation(block: block)
+            let op = BaseBlockOperation(request: upstream.queue.request, result: upstream.result, block: block)
             upstream.queue.addOperation(op)
         }
         

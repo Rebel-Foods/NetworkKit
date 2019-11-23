@@ -9,5 +9,6 @@
 import Foundation
 
 public protocol NetworkCancellable {
+    
     func cancel()
 }

@@ -11,7 +11,7 @@ import Foundation
 extension NKPublisher {
     
     func addToQueue(isSuspended: Bool = false, _ block: @escaping () -> Void) {
-        let op = BlockOperation(block: block)
+        let op = BaseBlockOperation(request: queue.request, result: result, block: block)
         result.operation = op
         queue.addOperation(op)
         queue(isSuspended: isSuspended)

@@ -8,11 +8,36 @@
 
 import Foundation
 
+/**
+ A type that represents server api. It can also be used for managing server environment in URL.
+ 
+ ```
+ let url = "https://api-staging.example.com/v1/users/all"
+ // `api` is a Server API.
+ // `staging` is Server Environment.
+ ```
+ */
 public protocol APIRepresentable {
     
-    /// Sub URL for API Type. It may include server environment for the api, it can be `current` environment.
+    /**
+     Sub URL for API.
+     
+     It may include server environment for the api.
+     Use **Environment.current** to maintain environment.
+     ```
+     let url = "https://api-staging.example.com/users/all"
+     // `api-staging` is sub url.
+     ```
+     */
     var subUrl: String { get }
     
-    /// EndPoint for API Type.
+    /**
+     EndPoint for API.
+     
+     ```
+     let url = "https://api-staging.example.com/v1/users/all"
+     // `/v1` is api endpoint.
+     ```
+     */
     var endPoint: String { get }
 }

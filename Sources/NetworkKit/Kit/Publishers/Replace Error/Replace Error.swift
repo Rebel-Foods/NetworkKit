@@ -50,6 +50,9 @@ public extension NKPublishers {
                 
             case .failure:
                 result.result = .success(output)
+                    
+            case .none:
+                result.result = .none
             }
         }
     }

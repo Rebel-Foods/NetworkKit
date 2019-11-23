@@ -31,7 +31,7 @@ public extension NKPublishers {
         public init(upstream: Upstream, transform: @escaping (Upstream.Failure) -> MapFailure) {
             self.upstream = upstream
             self.transform = transform
-            result = .init()
+            result = .init(result: .none)
             perform()
         }
         
@@ -52,6 +52,8 @@ public extension NKPublishers {
                 let newError = transform(error)
                 result.result = .failure(newError)
                 
+            case .none:
+                result.result = .none
             }
         }
     }

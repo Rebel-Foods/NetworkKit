@@ -8,14 +8,24 @@
 
 import Foundation
 
-/// Server Environment.
+/**
+ Server Environment.
+ 
+ ```
+ let url = "https://api-staging.example.com/v1/users/all"
+ // `staging` is Server Environment.
+ ```
+ 
+ It has a `current` property for maintaining the server environment.
+ 
+ To update the `current` environment, use `NetworkConfiguration.updateEnvironment(:_)`.
+ 
+ In `DEBUG` mode, it persists the `current` value in `UserDefaults`.
+ */
 public struct Environment: Hashable, Equatable {
     
-    public var value: String
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(value)
-    }
+    /// String value of the environment
+    public let value: String
     
     public init(value: String) {
         self.value = value

@@ -10,16 +10,16 @@ import Foundation
 
 public final class NKResult<Output, Failure: Error> {
     
-    var result: Result<Output, Failure>
+    var result: Result<Output, Failure>?
     
     var operation: Operation?
     
-    init(result: Result<Output, Failure>) {
+    init(result: Result<Output, Failure>?) {
         self.result = result
     }
     
     init() {
-        let error = NKError.notStarted(for: nil)
+        let error = NSError.notStarted(for: nil)
         result = .failure(error as! Failure)
     }
 }

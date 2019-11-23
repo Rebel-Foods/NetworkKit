@@ -20,7 +20,7 @@ public extension NKPublishers {
         
         public typealias Output = Item
         
-        public typealias Failure = NKError
+        public typealias Failure = NSError
         
         /// The publisher that this publisher receives elements from.
         public let upstream: Upstream
@@ -62,13 +62,14 @@ public extension NKPublishers {
                     self.result.result = .success(output)
                     
                 } catch {
-                    let nkError = NKError(error as NSError)
-                    result.result = .failure(nkError)
+                    result.result = .failure(error as NSError)
                 }
                 
             case .failure(let error):
-                let nkError = NKError(error as NSError)
-                result.result = .failure(nkError)
+                result.result = .failure(error as NSError)
+                    
+            case .none:
+                result.result = .none
             }
         }
     }

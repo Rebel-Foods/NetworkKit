@@ -8,7 +8,15 @@
 
 import Foundation
 
-/// Host URLs for the app.
+/**
+A type that represents a URL host.
+ 
+```
+let url = "https://api.example.com/users/all"
+// `example.com` is a host.
+```
+ 
+*/
 public protocol HostRepresentable {
     
     var host: String { get }

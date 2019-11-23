@@ -16,7 +16,7 @@ public struct NetworkTask: NKPublisher {
     
     public typealias Output = (data: Data, response: HTTPURLResponse)
     
-    public typealias Failure = NKError
+    public typealias Failure = NSError
     
     public let request: URLRequest?
     

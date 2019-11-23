@@ -10,9 +10,13 @@ import Foundation
 
 public final class NKQueue {
     
+    /// A queue that regulates the execution of operations.
+    /// It is a serial queue, that has `quality of service` of `utility`.
     let operationQueue: OperationQueue
-    var request: URLRequest?
-    var apiName: String
+    
+    let request: URLRequest?
+    
+    let apiName: String
     
     var operations: [Operation] {
         operationQueue.operations
