@@ -31,6 +31,10 @@ final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>:
     }
     
     override func main() {
+        guard !isCancelled else {
+            return
+        }
+        
         switch upstream.result.result {
         case .success(let output):
             result.result = .success(output)
@@ -49,6 +53,10 @@ final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>:
                 self.newOperation = newOperation
                 
                 newOperation.completionBlock = { [weak self] in
+                    guard !(self?.isCancelled ?? true) else {
+                        return
+                    }
+                    
                     switch newPublisher.result.result! {
                     case .success(let output):
                         self?.result.result = .success(output)

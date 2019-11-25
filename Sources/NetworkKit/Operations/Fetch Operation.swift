@@ -28,6 +28,10 @@ final class FetchOperation: AsynchronousOperation {
     }
     
     override func main() {
+        guard !isCancelled else {
+            return
+        }
+        
         guard let request = request else {
             result?.result = .failure(NSError.unsupportedURL(for: nil))
             finish()

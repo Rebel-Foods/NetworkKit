@@ -25,6 +25,10 @@ final class DebounceOperation<Output, Failure: Error>: AsynchronousOperation {
     }
     
     override func main() {
+        guard !isCancelled else {
+            return
+        }
+        
         DispatchQueue.global(qos: .utility).asyncAfter(deadline: dueTime) { [weak self] in
             self?.finish()
         }
