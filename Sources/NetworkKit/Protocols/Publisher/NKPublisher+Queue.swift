@@ -24,8 +24,8 @@ extension NKPublisher {
     }
     
     func queue(isSuspended: Bool) {
-        if queue.operationQueue.isSuspended != isSuspended {
-            queue.operationQueue.isSuspended = isSuspended
+        if queue.isSuspended != isSuspended {
+            queue.isSuspended = isSuspended
         }
     }
 }

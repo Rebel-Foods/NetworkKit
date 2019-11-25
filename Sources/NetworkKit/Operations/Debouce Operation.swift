@@ -10,9 +10,11 @@ import Foundation
 
 final class DebounceOperation<Output, Failure: Error>: AsynchronousOperation {
     
-    let dueTime: DispatchTime
-    let result: NKResult<Output, Failure>
-    let url: URL?
+    private let dueTime: DispatchTime
+    
+    private let result: NKResult<Output, Failure>
+    
+    private let url: URL?
     
     init(result: NKResult<Output, Failure>, url: URL?, dueTime: DispatchTime) {
         self.result = result

@@ -36,24 +36,8 @@ public extension NKPublishers {
         }
         
         private func perform() {
-            addToQueue {
-                self.doReplace()
-            }
-        }
-        
-        private func doReplace() {
-            let upstreamResult = upstream.result.result
-            
-            switch upstreamResult {
-            case .success(let output):
-                result.result = .success(output)
-                
-            case .failure:
-                result.result = .success(output)
-                    
-            case .none:
-                result.result = .none
-            }
+            let operation = ReplaceErrorOperation(upstream: upstream, output: output, result: result)
+            addToQueue(operation)
         }
     }
 }

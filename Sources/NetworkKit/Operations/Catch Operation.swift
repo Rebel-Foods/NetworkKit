@@ -10,9 +10,9 @@ import Foundation
 
 final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: AsynchronousOperation where Upstream.Output == NewPublisher.Output {
 
-    public typealias Output = Upstream.Output
+    typealias Output = Upstream.Output
 
-    public typealias Failure = NewPublisher.Failure
+    typealias Failure = NewPublisher.Failure
 
     /// The publisher that this publisher receives elements from.
     private let upstream: Upstream
@@ -53,7 +53,7 @@ final class CatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: As
                     self?.result.result = .failure(error)
                 }
                 
-                newPublisher.queue.operationQueue.cancelAllOperations()
+                newPublisher.queue.cancelAllOperations()
                 self?.finish()
             }
             

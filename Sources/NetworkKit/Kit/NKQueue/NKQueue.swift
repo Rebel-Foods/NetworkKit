@@ -12,7 +12,7 @@ public final class NKQueue {
     
     /// A queue that regulates the execution of operations.
     /// It is a serial queue, that has `quality of service` of `utility`.
-    let operationQueue: OperationQueue
+    private let operationQueue: OperationQueue
     
     let request: URLRequest?
     
@@ -22,10 +22,19 @@ public final class NKQueue {
         operationQueue.operations
     }
     
+    var isSuspended: Bool {
+        get { operationQueue.isSuspended }
+        set { operationQueue.isSuspended = newValue }
+    }
+    
     init(operationQueue: OperationQueue, request: URLRequest?, apiName: String?) {
         self.operationQueue = operationQueue
         self.request = request
         self.apiName = apiName ?? request?.url?.absoluteString ?? "nil"
+    }
+    
+    deinit {
+        operationQueue.cancelAllOperations()
     }
     
     func addOperation(_ op: Operation) {
@@ -34,5 +43,9 @@ public final class NKQueue {
     
     func addOperation(_ block: @escaping () -> Void) {
         operationQueue.addOperation(block)
+    }
+    
+    func cancelAllOperations() {
+        operationQueue.cancelAllOperations()
     }
 }

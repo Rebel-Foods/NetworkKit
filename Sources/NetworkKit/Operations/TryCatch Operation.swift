@@ -10,25 +10,25 @@ import Foundation
 
 final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>: AsynchronousOperation where Upstream.Output == NewPublisher.Output {
     
-    public typealias Output = Upstream.Output
+    typealias Output = Upstream.Output
 
-    public typealias Failure = NewPublisher.Failure
+    typealias Failure = NewPublisher.Failure
 
     /// The publisher that this publisher receives elements from.
     private let upstream: Upstream
     
     private var result: NKResult<Output, Failure>
+    
+    private var newOperation: Operation?
 
     /// A closure that accepts the upstream failure as input and returns a publisher to replace the upstream publisher.
     private let handler: (Upstream.Failure) throws -> NewPublisher
     
-    public init(upstream: Upstream, handler: @escaping (Upstream.Failure) throws -> NewPublisher, result: NKResult<Output, Failure>) {
+    init(upstream: Upstream, handler: @escaping (Upstream.Failure) throws -> NewPublisher, result: NKResult<Output, Failure>) {
         self.upstream = upstream
         self.handler = handler
         self.result = result
     }
-    
-    private var newOperation: Operation?
     
     override func main() {
         switch upstream.result.result {
@@ -57,7 +57,7 @@ final class TryCatchOperation<Upstream: NKPublisher, NewPublisher: NKPublisher>:
                         self?.result.result = .failure(error)
                     }
                     
-                    newPublisher.queue.operationQueue.cancelAllOperations()
+                    newPublisher.queue.cancelAllOperations()
                     self?.finish()
                 }
                 

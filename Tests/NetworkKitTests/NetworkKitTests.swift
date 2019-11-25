@@ -124,7 +124,7 @@ final class NetworkKitTests: XCTestCase {
         }
     }
     
-    var cancellable: NetworkCancellable!
+    var cancellable: NKAnyCancellable?
 
     let expecatation = XCTestExpectation()
     
@@ -136,6 +136,8 @@ final class NetworkKitTests: XCTestCase {
         .decode(type: Users.self, decoder: JSONDecoder())
         .replaceError(with: [User(id: "12", createdAt: "Today", name: "Guest User", avatar: nil)])
         .assign(to: \.users, on: self)
+        
+        cancellable?.cancel()
         
         wait(for: [expecatation], timeout: 60)
     }

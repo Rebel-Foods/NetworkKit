@@ -1,5 +1,5 @@
 //
-//  Cancellable.swift
+//  NKCancellable.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 18/11/19.
@@ -8,7 +8,8 @@
 
 import Foundation
 
-public protocol NetworkCancellable {
+public protocol NKCancellable {
     
+    /// Cancel the activity.
     func cancel()
 }

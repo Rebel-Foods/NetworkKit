@@ -20,8 +20,8 @@ public extension NKPublisher {
     
     /// Decodes the output from upstream using a specified `JSONDecoder`.
     /// - Parameter type: Type to decode into.
-    /// - Parameter jsonKeyDecodingStrategy: JSON Key Decoding Strategy.
-    func decode<Item>(type: Item.Type, jsonKeyDecodingStrategy: JSONDecoder.KeyDecodingStrategy) -> NKPublishers.Decode<Self, Item, JSONDecoder> {
+    /// - Parameter jsonKeyDecodingStrategy: JSON Key Decoding Strategy. Default value is `.useDefaultKeys`.
+    func decode<Item>(type: Item.Type, jsonKeyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) -> NKPublishers.Decode<Self, Item, JSONDecoder> {
         NKPublishers.Decode(upstream: self, jsonKeyDecodingStrategy: jsonKeyDecodingStrategy)
     }
     
@@ -66,7 +66,6 @@ public extension NKPublisher {
     /// Use this operator when you want to wait for a pause in the delivery of events from the upstream publisher. For example, call `debounce` on the publisher from a text field to only receive elements when the user pauses or stops typing. When they start typing again, the `debounce` holds event delivery until the next pause.
     /// - Parameters:
     ///   - dueTime: The time the publisher should wait before publishing an element.
-    ///   - scheduler: The scheduler on which this publisher delivers elements
     func debounce(_ dueTime: DispatchTime) -> NKPublishers.Debounce<Self> {
         NKPublishers.Debounce(upstream: self, dueTime: dueTime)
     }
@@ -148,11 +147,16 @@ public extension NKPublisher {
     /// Attaches a subscriber with closure-based behavior.
     ///
     /// This method creates the subscriber and immediately requests an unlimited number of values, prior to returning the subscriber.
-    /// - parameter receiveComplete: The closure to execute on completion.
-    /// - parameter receiveValue: The closure to execute on receipt of a value.
+    /// - parameter block: The closure to execute on completion.
     /// - Returns: A cancellable instance; used when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
-    func completion(_ block: @escaping (Result<Output, Failure>) -> Void) -> NetworkCancellable {
-        NKPublishers.Completion(upstream: self, block: block)
+    func completion(_ block: @escaping (Result<Output, Failure>) -> Void) -> NKAnyCancellable {
+        queue.addOperation {
+            block(self.result.result!)
+        }
+        
+        return NKAnyCancellable {
+            self.queue.cancelAllOperations()
+        }
     }
 }
 
@@ -164,7 +168,12 @@ public extension NKPublisher where Self.Failure == Never {
     ///   - keyPath: The key path of the property to assign.
     ///   - object: The object on which to assign the value.
     /// - Returns: A cancellable instance; used when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
-    func assign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Self.Output>, on root: Root) -> NetworkCancellable {
-        NKPublishers.Assign(upstream: self, to: keyPath, on: root)
+    func assign<Root>(to keyPath: ReferenceWritableKeyPath<Root, Self.Output>, on object: Root) -> NKAnyCancellable {
+        let operation = AssignOperation(upstrem: self, keypath: keyPath, object: object)
+        queue.addOperation(operation)
+        
+        return NKAnyCancellable {
+            self.queue.cancelAllOperations()
+        }
     }
 }
