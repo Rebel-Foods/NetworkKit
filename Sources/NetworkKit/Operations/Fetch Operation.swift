@@ -29,7 +29,7 @@ final class FetchOperation: AsynchronousOperation {
     
     override func main() {
         guard let request = request else {
-            result?.result = .failure(NSError.unsupportedURL(for: nil) as NSError)
+            result?.result = .failure(NSError.unsupportedURL(for: nil))
             finish()
             return
         }
@@ -48,7 +48,7 @@ final class FetchOperation: AsynchronousOperation {
     }
     
     override func cancel() {
-        result?.result = .failure(NSError.cancelled(for: request?.url) as NSError)
+        result?.result = .failure(NSError.cancelled(for: request?.url))
         task?.cancel()
         super.cancel()
     }
