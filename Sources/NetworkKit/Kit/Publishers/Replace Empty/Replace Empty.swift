@@ -1,8 +1,8 @@
 //
-//  Replace Error.swift
+//  Replace Empty.swift
 //  NetworkKit
 //
-//  Created by Raghav Ahuja on 18/11/19.
+//  Created by Raghav Ahuja on 26/11/19.
 //  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
 
@@ -10,8 +10,8 @@ import Foundation
 
 public extension NKPublishers {
     
-    /// A publisher that replaces any errors in the stream with a provided element.
-    struct ReplaceError<Upstream: NKPublisher>: NKPublisher {
+    /// A publisher that replaces an empty stream with a provided element.
+    struct ReplaceEmpty<Upstream: NKPublisher>: NKPublisher {
         
         public var result: NKResult<Output, Failure>
         
@@ -37,7 +37,7 @@ public extension NKPublishers {
         }
         
         private func perform() {
-            let operation = ReplaceErrorOperation(upstream: upstream, output: output, result: result)
+            let operation = ReplaceEmptyOperation(upstream: upstream, output: output, result: result)
             addToQueue(operation)
         }
     }

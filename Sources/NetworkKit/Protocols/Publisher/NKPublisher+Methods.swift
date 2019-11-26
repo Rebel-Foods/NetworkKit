@@ -146,6 +146,23 @@ public extension NKPublisher {
     func tryCompactMap<T>(_ transform: @escaping (Self.Output) throws -> T?) -> NKPublishers.TryCompactMap<Self, T> {
         NKPublishers.TryCompactMap(upstream: self, transform: transform)
     }
+    
+    /// Replaces nil elements in the stream with the proviced element.
+    ///
+    /// - Parameter output: The element to use when replacing `nil`.
+    /// - Returns: A publisher that replaces `nil` elements from the upstream publisher with the provided element.
+    func replaceNil<T>(with output: T) -> NKPublishers.Map<Self, T> where Output == T? {
+        NKPublishers.Map(upstream: self) { _ in output }
+    }
+    
+    /// Replaces an empty stream with the provided element.
+    ///
+    /// If the upstream publisher finishes without producing any elements, this publisher emits the provided element, then finishes normally.
+    /// - Parameter output: An element to emit when the upstream publisher finishes without emitting any elements.
+    /// - Returns: A publisher that replaces an empty stream with the provided output element.
+    func replaceEmpty(with output: Output) -> NKPublishers.ReplaceEmpty<Self> {
+        NKPublishers.ReplaceEmpty(upstream: self, output: output)
+    }
 }
 
 public extension NKPublisher where Self.Output == NetworkTask.Output, Self.Failure == NetworkTask.Failure {
