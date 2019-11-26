@@ -23,7 +23,11 @@ final class AssignOperation<Upstream: NKPublisher, Root>: Operation where Upstre
     }
     
     override func main() {
-        object[keyPath: keypath] = try! upstrem.result.result!.get()
+        guard let output = try? upstrem.result.result?.get() else {
+            updatedValue = true
+            return
+        }
+        object[keyPath: keypath] = output
         updatedValue = true
     }
     

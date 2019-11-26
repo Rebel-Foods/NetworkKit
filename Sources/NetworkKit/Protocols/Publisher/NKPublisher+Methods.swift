@@ -129,6 +129,23 @@ public extension NKPublisher {
     func mapError<E: Error>(_ transform: @escaping (Self.Failure) -> E) -> NKPublishers.MapError<Self, E> {
         NKPublishers.MapError(upstream: self, transform: transform)
     }
+    
+    /// Calls a closure with each received element and publishes any returned optional that has a value.
+    ///
+    /// - Parameter transform: A closure that receives a value and returns an optional value.
+    /// - Returns: A publisher that republishes all non-`nil` results of calling the transform closure.
+    func compactMap<T>(_ transform: @escaping (Output) -> T?) -> NKPublishers.CompactMap<Self, T> {
+        NKPublishers.CompactMap(upstream: self, transform: transform)
+    }
+    
+    /// Calls an error-throwing closure with each received element and publishes any returned optional that has a value.
+    ///
+    /// If the closure throws an error, the publisher cancels the upstream and sends the thrown error to the downstream receiver as a `Failure`.
+    /// - Parameter transform: an error-throwing closure that receives a value and returns an optional value.
+    /// - Returns: A publisher that republishes all non-`nil` results of calling the transform closure.
+    func tryCompactMap<T>(_ transform: @escaping (Self.Output) throws -> T?) -> NKPublishers.TryCompactMap<Self, T> {
+        NKPublishers.TryCompactMap(upstream: self, transform: transform)
+    }
 }
 
 public extension NKPublisher where Self.Output == NetworkTask.Output, Self.Failure == NetworkTask.Failure {
@@ -151,7 +168,11 @@ public extension NKPublisher {
     /// - Returns: A cancellable instance; used when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
     func completion(_ block: @escaping (Result<Output, Failure>) -> Void) -> NKAnyCancellable {
         queue.addOperation {
-            block(self.result.result!)
+            guard let output = self.result.result else {
+                return
+            }
+            
+            block(output)
         }
         
         return NKAnyCancellable {
