@@ -1,5 +1,5 @@
 //
-//  Network Configuration+Notification.swift
+//  NKConfiguration+Notification.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
@@ -10,7 +10,7 @@
 import AppKit.NSApplication
 
 // MARK: - NOTIFICATION OBSERVERS
-extension NetworkConfiguration {
+extension NKConfiguration {
     var notification: Notification.Name { NSApplication.willTerminateNotification }
  
 }
@@ -21,7 +21,7 @@ extension NetworkConfiguration {
 import UIKit.UIApplication
 
 // MARK: - NOTIFICATION OBSERVERS
-extension NetworkConfiguration {
+extension NKConfiguration {
     var notification: Notification.Name { UIApplication.willTerminateNotification }
 }
 

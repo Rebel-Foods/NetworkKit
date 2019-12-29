@@ -7,13 +7,27 @@
 //
 
 import Foundation
+import PublisherKit
 
-final public class NKSession: NetworkConfiguration {
+extension URLSession.NKDataTaskPublisher {
+    
+    public func validate() -> NKPublishers.Validate {
+        NKPublishers.Validate(upstream: self, shouldCheckForErrorModel: true, acceptableStatusCodes: NKSession.shared.acceptableStatusCodes)
+    }
+}
+
+public typealias NKTask = URLSession.NKDataTaskPublisher
+public typealias NKAnyCancellable = PublisherKit.NKAnyCancellable
+public typealias NKPublishers = PublisherKit.NKPublishers
+
+final public class NKSession: NKConfiguration {
     
     public static let shared = NKSession()
     
+    private let queue = DispatchQueue(label: "com.networkkit.task-thread", qos: .utility, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
+    
     private init() {
-        super.init(configuration: NetworkConfiguration.defaultConfiguration)
+        super.init(configuration: NKConfiguration.defaultConfiguration)
         
         #if DEBUG
         if let environmentValue = UserDefaults.standard.value(forKey: "api_environment") as? String, !environmentValue.isEmpty {
@@ -32,8 +46,18 @@ final public class NKSession: NetworkConfiguration {
     /// - Parameter builder: The block which returns a `NetworkRequest` to create a URL session data task.
     /// - Parameter apiName: API Name for debug console logging.
     /// - Returns: A publisher that wraps a data task for the URL request.
-    public func dataTask(_ builder: () -> NetworkRequest) -> NetworkTask {
-        NetworkTask(session: session, builder)
+    public func dataTask(file: StaticString = #file, line: UInt = #line, function: StaticString = #function, _ builder: () -> NKRequest) -> URLSession.NKDataTaskPublisher {
+        let creator = builder()
+        let urlRequest: URLRequest? = queue.sync {
+            creator.create()
+            return creator.request
+        }
+        
+        guard let request = urlRequest else {
+            NKLogger.default.preconditionFailure("Invalid Request Created", file: file, line: line, function: function)
+        }
+        
+        return session.nkTaskPublisher(for: request, apiName: creator.apiName)
     }
     
     /// Returns a publisher that wraps a URL session data task for a given URL request.
@@ -42,8 +66,8 @@ final public class NKSession: NetworkConfiguration {
     /// - Parameter request: The URL request for which to create a data task.
     /// - Parameter apiName: API Name for debug console logging.
     /// - Returns: A publisher that wraps a data task for the URL request.
-    public func dataTask(for request: URLRequest, apiName: String? = nil) -> NetworkTask {
-        NetworkTask(request: request, session: session, apiName: apiName)
+    public func dataTask(for request: URLRequest, apiName: String? = nil) -> URLSession.NKDataTaskPublisher {
+        session.nkTaskPublisher(for: request)
     }
     
     /// Returns a publisher that wraps a URL session data task for a given URL.
@@ -52,7 +76,7 @@ final public class NKSession: NetworkConfiguration {
     /// - Parameter url: The URL for which to create a data task.
     /// - Parameter apiName: API Name for debug console logging.
     /// - Returns: A publisher that wraps a data task for the URL.
-    public func dataTask(for url: URL, apiName: String? = nil) -> NetworkTask {
-        NetworkTask(url: url, session: session, apiName: apiName)
+    public func dataTask(for url: URL, apiName: String? = nil) -> URLSession.NKDataTaskPublisher {
+        session.nkTaskPublisher(for: url)
     }
 }

@@ -129,7 +129,7 @@ final class NetworkKitTests: XCTestCase {
     let expecatation = XCTestExpectation()
     
     func testExample() {
-        cancellable = NetworkTask(session: NKSession.shared) {
+        cancellable = NKSession.shared.dataTask {
             NetworkRequest(to: MockPoint.allUsers)
         }
         .map(\.data)

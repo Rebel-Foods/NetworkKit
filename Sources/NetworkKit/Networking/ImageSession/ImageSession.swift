@@ -8,12 +8,12 @@
 
 import Foundation
 
-public final class NKImageSession: NetworkConfiguration {
+public final class NKImageSession: NKConfiguration {
     
     private typealias ImageValidationResult = (response: HTTPURLResponse, data: Data, image: ImageType)
     
     public static let shared = NKImageSession()
-    
+        
     public init(useCache: Bool = true, cacheDiskPath: String? = "cachedImages") {
         let requestCachePolicy: NSURLRequest.CachePolicy = useCache ? .returnCacheDataElseLoad : .useProtocolCachePolicy
         super.init(useDefaultCache: useCache, requestCachePolicy: requestCachePolicy, cacheDiskPath: cacheDiskPath)
@@ -37,27 +37,11 @@ public extension NKImageSession {
         let task = session.dataTask(with: request) { [weak self] (data, response, error) in
             
             guard let `self` = self else {
-                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)
-                completion(.failure(error))
                 return
             }
             
             if let error = error as NSError? {
-                
-                #if DEBUG
-                DebugPrint.print(
-                    """
-                    
-                    ---------------------------------------------
-                    Cannot Fetch Image From:
-                    URL: \(url.absoluteString)
-                    Error: \(error)
-                    ---------------------------------------------
-                    
-                    """
-                    , shouldPrint: self.debugPrint)
-                #endif
-                
+                self.logger.log(error: error)
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }
@@ -72,24 +56,10 @@ public extension NKImageSession {
                     completion(.success(value.image))
                 }
                 
-            case .failure(let networkError):
-                
-                #if DEBUG
-                DebugPrint.print(
-                    """
-                    
-                    ---------------------------------------------
-                    Cannot Fetch Image From:
-                    URL: \(url.absoluteString)
-                    Error: \(networkError.localizedDescription)
-                    ---------------------------------------------
-                    
-                    """
-                    , shouldPrint: self.debugPrint)
-                #endif
-                
+            case .failure(let error):
+                self.logger.log(error: error)
                 DispatchQueue.main.async {
-                    completion(.failure(networkError))
+                    completion(.failure(error))
                 }
             }
         }

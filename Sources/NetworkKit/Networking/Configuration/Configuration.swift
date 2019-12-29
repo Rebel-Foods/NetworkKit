@@ -1,5 +1,5 @@
 //
-//  Network Configuration.swift
+//  NKConfiguration.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
@@ -8,20 +8,32 @@
 
 import Foundation
 
-// MARK: - NETWORK CONFIGURATION
+// MARK: - NKCONFIGURATION
 
 /// A Class that coordinates a group of related network data transfer tasks.
-open class NetworkConfiguration {
+open class NKConfiguration {
     
-    /// Allows Logs to be Printed in Debug Console.
-    /// Default value is `true`
-    open var debugPrint: Bool
+    /// Enables Logging for this session.
+    /// Default value is `true`.
+    open var enableLogs: Bool {
+        get {
+            logger.isLoggingEnabled
+        } set {
+            logger.isLoggingEnabled = newValue
+        }
+    }
     
-    /// Should Empty URL Cache Before Application Terminates.
+    var logger = NKLogger()
+    
+    /// Should allow logging for all sessions.
+    /// Default value is `false`.
+    public static var allowLoggingOnAllSessions: Bool = true
+    
+    /// Should empty cache before application terminates.
     /// Default value is `true`.
     open var emptyCacheOnAppTerminate: Bool
     
-    /// Should Empty URL Cache Before Application Terminates.
+    /// Should empty cache before application terminates.
     /// Default value is `false`.
     public static var emptyCacheOnAppTerminateOnAllSessions: Bool = false
     
@@ -51,7 +63,7 @@ open class NetworkConfiguration {
     
     /// Inititalises Manager with `defaultURLSessionConfiguration` Configuration.
     public init(useDefaultCache: Bool, requestCachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, cacheDiskPath diskPath: String? = nil) {
-        let configuration = NetworkConfiguration.defaultConfiguration
+        let configuration = NKConfiguration.defaultConfiguration
         configuration.requestCachePolicy = requestCachePolicy
         
         if useDefaultCache {
@@ -68,7 +80,7 @@ open class NetworkConfiguration {
         }
         
         session = URLSession(configuration: configuration)
-        debugPrint = true
+//        session.nkLogger = .init()
         emptyCacheOnAppTerminate = true
         setNotificationObservers()
     }
@@ -76,7 +88,7 @@ open class NetworkConfiguration {
     public init(urlCache cache: URLCache? = nil, configuration config: URLSessionConfiguration) {
         urlCache = cache
         session = URLSession(configuration: config)
-        debugPrint = true
+//        session.nkLogger = .init()
         emptyCacheOnAppTerminate = true
         setNotificationObservers()
     }
@@ -90,7 +102,7 @@ open class NetworkConfiguration {
     private func setNotificationObservers() {
         #if !canImport(WatchKit)
         NotificationCenter.default.addObserver(forName: notification, object: nil, queue: .init()) { [weak self] (_) in
-            if let `self` = self, self.emptyCacheOnAppTerminate || NetworkConfiguration.emptyCacheOnAppTerminateOnAllSessions {
+            if let `self` = self, self.emptyCacheOnAppTerminate || NKConfiguration.emptyCacheOnAppTerminateOnAllSessions {
                 self.removeAllCachedResponses()
             }
         }
@@ -100,7 +112,7 @@ open class NetworkConfiguration {
 
 
 // MARK: - URL CACHE MANAGER
-extension NetworkConfiguration {
+extension NKConfiguration {
     
     /// Remove All Cached Responses from this session.
     open func removeAllCachedResponses() {
@@ -110,16 +122,9 @@ extension NetworkConfiguration {
     #if DEBUG
     public func printURLCacheDetails() {
         guard let cache = session.configuration.urlCache else {
-            print(
-                """
-                
-                ---------------------------------------------
-                Cannot Print Cache Memory And Disk Capacity And Usage
-                Error - No URL Cache Found
-                ---------------------------------------------
-                
-                """
-            )
+            logger.print(
+                "Cannot Print Cache Memory And Disk Capacity And Usage",
+                 "Error - No URL Cache Found")
             return
         }
         let byteToMb: Double = 1048576
@@ -130,26 +135,19 @@ extension NetworkConfiguration {
         let diskCapacity = Double(cache.diskCapacity) / byteToMb
         let diskUsage = Double(cache.currentDiskUsage) / byteToMb
         
-        print(
-            """
-            
-            ---------------------------------------------
-            Current URL Cache Memory And Disk Capacity And Usage
-            Memory Capacity: \(String(format: "%.2f", memoryCapacity)) Mb
-            Memory Usage: \(String(format: "%.3f", memoryUsage)) Mb
-            
-            Disk Capacity: \(String(format: "%.2f", diskCapacity)) Mb
-            Disk Usage: \(String(format: "%.3f", diskUsage)) Mb
-            ---------------------------------------------
-            
-            """
+        logger.print(
+        "Current URL Cache Memory And Disk Capacity And Usage",
+        "Memory Capacity: \(String(format: "%.2f", memoryCapacity)) Mb",
+        "Memory Usage: \(String(format: "%.3f", memoryUsage)) Mb",
+        "Disk Capacity: \(String(format: "%.2f", diskCapacity)) Mb",
+        "Disk Usage: \(String(format: "%.3f", diskUsage)) Mb"
         )
     }
     #endif
 }
 
 // MARK: - SERVER ENVIRONMENT
-public extension NetworkConfiguration {
+public extension NKConfiguration {
     
     /// Updates the current environment.
     /// - Parameter newEnvironment: New Server Environment to be set.

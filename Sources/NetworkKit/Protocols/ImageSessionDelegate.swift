@@ -63,15 +63,7 @@ private extension NKImageSessionDelegate {
         
         guard let urlStringValue = urlString, let url = URL(string: urlStringValue) else {
             #if DEBUG
-            print("""
-                
-                ---------------------------------------------
-                Cannot Fetch Image From:
-                URL: \(String(describing: urlString))
-                Error: \(URLError(.badURL).localizedDescription)
-                ---------------------------------------------
-                
-                """)
+            NKImageSession.shared.logger.log(error: NSError.badURL(for: urlString))
             #endif
             
             if flag {

@@ -15,7 +15,7 @@ public struct CreateRequest {
     
     public let request: URLRequest
     
-    public init?(with connection: ConnectionRepresentable, query urlQuery: URLQuery?) {
+    public init?(with connection: ConnectionRepresentable, query urlQuery: Set<URLQueryItem>, body: Data?, headers: HTTPHeaderParameters) {
         
         var components = URLComponents()
         components.scheme = connection.scheme.rawValue
@@ -26,15 +26,15 @@ public struct CreateRequest {
         components.host = (subURL.isEmpty ? subURL : subURL + ".") + connection.host.host
         components.path = endPoint + connection.path
         
-        var queryItems: [URLQueryItem] = []
-        queryItems.addURLQuery(query: urlQuery)
+        var queryItems = Set<URLQueryItem>()
         queryItems.addURLQuery(query: connection.defaultQuery)
         queryItems.addURLQuery(query: connection.host.defaultUrlQuery)
+        queryItems = queryItems.union(urlQuery)
         
         let method = connection.method
         
         if !queryItems.isEmpty {
-            components.queryItems = queryItems
+            components.queryItems = Array(queryItems)
         }
         
         guard let url = components.url else {
@@ -47,15 +47,15 @@ public struct CreateRequest {
         let defaultHeaderFields = connection.host.defaultHeaders
         let connectionHeaderFields = connection.httpHeaders
         
-        let headerFields = defaultHeaderFields.merging(connectionHeaderFields) { (_, new) in new }
+        var headerFields = defaultHeaderFields.merging(connectionHeaderFields) { (_, new) in new }
+        headerFields.merge(headers) { (_, new) in new }
         
         if !headerFields.isEmpty {
             urlRequest.allHTTPHeaderFields = headerFields
         }
+        
+        urlRequest.httpBody = body
         request = urlRequest
         
-        #if DEBUG
-        DebugPrint.logAPIRequest(request: request, apiName: connection.name)
-        #endif
     }
 }

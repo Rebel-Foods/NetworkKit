@@ -18,7 +18,7 @@ import Foundation
  
  It has a `current` property for maintaining the server environment.
  
- To update the `current` environment, use `NetworkConfiguration.updateEnvironment(:_)`.
+ To update the `current` environment, use `NKConfiguration.updateEnvironment(:_)`.
  
  In `DEBUG` mode, it persists the `current` value in `UserDefaults`.
  */
