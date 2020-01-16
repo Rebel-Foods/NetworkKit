@@ -1,3 +1,3 @@
 # NetworkKit
 
-A description of this package.
+Description with example coming soon. ;)
