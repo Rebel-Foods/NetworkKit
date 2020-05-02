@@ -3,7 +3,6 @@
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 21/04/20.
-//  Copyright © 2020 Raghav Ahuja. All rights reserved.
 //
 
 // MARK: REACHABILITY TAKEN FROM ALAMOFIRE
@@ -346,3 +345,4 @@ fileprivate final class Protected<T> {
         set { lock.do { value[keyPath: keyPath] = newValue } }
     }
 }
+

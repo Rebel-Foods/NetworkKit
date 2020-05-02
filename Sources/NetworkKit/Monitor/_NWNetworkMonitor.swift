@@ -3,7 +3,6 @@
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 21/04/20.
-//  Copyright © 2020 Raghav Ahuja. All rights reserved.
 //
 
 import Network
