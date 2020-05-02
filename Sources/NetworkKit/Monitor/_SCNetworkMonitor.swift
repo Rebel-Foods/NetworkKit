@@ -345,4 +345,3 @@ fileprivate final class Protected<T> {
         set { lock.do { value[keyPath: keyPath] = newValue } }
     }
 }
-
