@@ -3,7 +3,6 @@
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
-//  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
 
 #if canImport(WatchKit)
@@ -17,7 +16,7 @@ extension WKInterfaceImage: NKImageSessionDelegate {
         set { setImage(newValue) }
     }
     
-    open func prepareForReuse(_ placeholder: ImageType? = nil) {
+    @objc open func prepareForReuse(_ placeholder: ImageType? = nil) {
         setImage(placeholder)
     }
 }
@@ -28,7 +27,7 @@ import UIKit.UIImage
 
 extension UIImageView: NKImageSessionDelegate {
     
-    open func prepareForReuse(_ placeholder: ImageType? = nil) {
+    @objc open func prepareForReuse(_ placeholder: ImageType? = nil) {
         image = placeholder
     }
 }
@@ -39,7 +38,7 @@ import AppKit.NSImage
 
 extension NSImageView: NKImageSessionDelegate {
     
-    open func prepareForReuse(_ placeholder: ImageType? = nil) {
+    @objc open func prepareForReuse(_ placeholder: ImageType? = nil) {
         image = placeholder
     }
 }
