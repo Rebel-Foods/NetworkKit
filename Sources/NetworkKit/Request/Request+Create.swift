@@ -1,26 +1,28 @@
 //
-//  CreateRequest.swift
+//  Request+Create.swift
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
-//  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
 
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 public typealias URLQuery = [String: String?]
 public typealias HTTPHeaderParameters = [String: String]
 
-public struct CreateRequest {
+extension NKRequest {
     
-    public let request: URLRequest
-    
-    public init?(with connection: ConnectionRepresentable, query urlQuery: Set<URLQueryItem>, body: Data?, headers: HTTPHeaderParameters) {
+    /// Creates the `URLRequest` from `NKRequest`.
+    public func create() {
         
         var components = URLComponents()
         components.scheme = connection.scheme.rawValue
         
-        let subURL = connection.apiType?.subUrl ?? ""
+        let subURL = connection.apiType?.subURL ?? ""
         let endPoint = connection.apiType?.endPoint ?? ""
         
         components.host = (subURL.isEmpty ? subURL : subURL + ".") + connection.host.host
@@ -28,8 +30,8 @@ public struct CreateRequest {
         
         var queryItems = Set<URLQueryItem>()
         queryItems.addURLQuery(query: connection.defaultQuery)
-        queryItems.addURLQuery(query: connection.host.defaultUrlQuery)
-        queryItems = queryItems.union(urlQuery)
+        queryItems.addURLQuery(query: connection.host.defaultURLQuery)
+        queryItems = queryItems.union(self.queryItems)
         
         let method = connection.method
         
@@ -38,10 +40,11 @@ public struct CreateRequest {
         }
         
         guard let url = components.url else {
-            return nil
+            return
         }
         
         var urlRequest = URLRequest(url: url)
+        urlRequest.networkServiceType = networkServiceType
         urlRequest.httpMethod = method.rawValue
         
         let defaultHeaderFields = connection.host.defaultHeaders
@@ -54,8 +57,7 @@ public struct CreateRequest {
             urlRequest.allHTTPHeaderFields = headerFields
         }
         
-        urlRequest.httpBody = body
-        request = urlRequest
-        
+        urlRequest.httpBody = bodyData
+        _request = urlRequest
     }
 }

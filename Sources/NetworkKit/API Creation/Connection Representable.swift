@@ -3,10 +3,7 @@
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
-//  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
-
-import Foundation
 
 /**
  A type that represents as a connection or an endpoint.
@@ -16,7 +13,7 @@ import Foundation
  // `/users/all` is a connection.
  ```
  */
-public protocol ConnectionRepresentable {
+public protocol ConnectionRepresentable: CustomStringConvertible {
     
     /**
      The path subcomponent. It is the connection endpoint for the url.
@@ -25,9 +22,9 @@ public protocol ConnectionRepresentable {
      let url = "https://api.example.com/users/all"
      // `/users/all` is the path for this connection
      ```
-    
+     
      Setting this property assumes the subcomponent or component string is not percent encoded and will add percent encoding (if the component allows percent encoding).
- */
+     */
     var path: String { get }
     
     /// Connection name if any. Use for console logging. Defaults to connection url if provided `nil`.
@@ -52,9 +49,13 @@ public protocol ConnectionRepresentable {
     var apiType: APIRepresentable? { get }
 }
 
-public extension ConnectionRepresentable {
+extension ConnectionRepresentable {
     
-    var scheme: Scheme { .https }
+    public var scheme: Scheme { .https }
     
-    var apiType: APIRepresentable? { host.defaultAPIType }
+    public var apiType: APIRepresentable? { host.defaultAPIType }
+    
+    public var description: String {
+        "\(name ?? "Unknown")| \(path)"
+    }
 }

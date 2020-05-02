@@ -3,10 +3,13 @@
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
-//  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
 
 import Foundation
+
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public enum HTTPBodyEncodingType {
     case formURLEncoded

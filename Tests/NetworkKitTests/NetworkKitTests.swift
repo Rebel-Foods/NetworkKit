@@ -4,7 +4,7 @@ import XCTest
 enum APIType: String, APIRepresentable {
     case v1 = "5da1e9ae76c28f0014bbe25f"
     
-    var subUrl: String {
+    var subURL: String {
         rawValue
     }
     
@@ -25,7 +25,7 @@ enum Host: String, HostRepresentable {
     
     var defaultAPIType: APIRepresentable? { APIType.v1 }
     
-    var defaultUrlQuery: URLQuery? { nil }
+    var defaultURLQuery: URLQuery? { nil }
 }
 
 extension Environment {
@@ -124,13 +124,13 @@ final class NetworkKitTests: XCTestCase {
         }
     }
     
-    var cancellable: NKAnyCancellable?
+    var cancellable: AnyCancellable?
 
     let expecatation = XCTestExpectation()
     
     func testExample() {
         cancellable = NKSession.shared.dataTask {
-            NetworkRequest(to: MockPoint.allUsers)
+            NKRequest(to: MockPoint.allUsers)
         }
         .map(\.data)
         .decode(type: Users.self, decoder: JSONDecoder())

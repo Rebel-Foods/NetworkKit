@@ -3,10 +3,7 @@
 //  NetworkKit
 //
 //  Created by Raghav Ahuja on 15/10/19.
-//  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
-
-import Foundation
 
 /**
  A type that represents server api. It can also be used for managing server environment in URL.
@@ -25,11 +22,11 @@ public protocol APIRepresentable {
      It may include server environment for the api.
      Use **Environment.current** to maintain environment.
      ```
-     let url = "https://api-staging.example.com/users/all"
-     // `api-staging` is sub url.
+     let url = "https://api.example.com/users/all"
+     // `api` is sub url.
      ```
      */
-    var subUrl: String { get }
+    var subURL: String { get }
     
     /**
      EndPoint for API.
